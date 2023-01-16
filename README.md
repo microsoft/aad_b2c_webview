@@ -1,33 +1,69 @@
-# Project
+Azure AD B2C Embedded Webview
+============================
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+Azure AD B2C Embedded Webview is a very simple Flutter package that demonstrates how to use the embedded web view to sign in users with Azure AD B2C.
+Currently, using Flutter packages - [appAuth](https://pub.dev/packages/flutter_appauth) and [flutter_azure_b2c](https://pub.dev/packages/flutter_azure_b2c) redirects to browser and doesn't provide in-app experience.
 
-As the maintainer of this project, please make a few updates:
+This package embeds the web view of the user flow endpoint using [flutter_appview](https://pub.dev/packages/webview_flutter) and redirects the user as per onRedirect callback method.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Features
 
-## Contributing
+Embedded web view for Azure AD B2C for providing in-app experience
+Redirects to the route specified in redirectRoute after successful sign in
+Successfully secures the id token or access token in the app using flutter secure storage
+Navigates to screen in app after successful sign in
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+## Getting started
+To use the package in your Flutter app, add the following code to your main.dart file:
+```yaml
+dependencies:
+  aad_b2c_webview: ^0.0.1
+```
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+## Usage
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+Example added in aad-b2c-webview/aad_b2c folder
 
-## Trademarks
+```dart
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Flutter Demo',
+    theme: ThemeData(
+      primaryColor: const Color(0xFF2F56D2),
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          color: Colors.black,
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'UberMove',
+        ),
+        bodyText1: TextStyle(
+          color: Color(0xFF8A8A8A),
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
+          fontFamily: 'UberMoveText',
+        ),
+        headline2: TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'UberMove',
+        ),
+      ),
+    ),
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/',
+    routes: {
+      // When navigating to the "/" route, build the Create Account widget.
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+      '/': (context) => const ADB2CEmbedWebView(
+        url: '<user_flow_endpoint>',
+        redirectUrl: '<redirect_uri_of_user_flow>',
+        redirectRoute: '<route_to_redirect_to_after_sign_in>',
+        onRedirect: onRedirect,
+      ),
+    },
+  );
+}
+```
