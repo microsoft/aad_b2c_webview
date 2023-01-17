@@ -2,9 +2,11 @@
 
 Azure Active Directory B2C (AAD B2C) is a cloud-based identity and access management service that enables you to customize and control the user sign-up, sign-in, and profile management process.
 This article will walk you through several ways on how we can integrate Azure AD B2C's user login workflow within mobile app development using Flutter.
-It will also demonstrates how to secure the token in the app using flutter secure storage and how to navigate to a screen in the app after successful sign in.
+
+It will also demonstrate how to secure the token in the app using [flutter-secure-storage](https://pub.dev/packages/flutter_secure_storage) and how to navigate to a screen inside the app after successful sign in.
 
 Consider the below scenario:-
+
 You have a mobile app that needs to authenticate users using Azure AD B2C. You want to provide a seamless experience to your users by not redirecting them to a browser for authentication. You want to provide a native experience to your users for registration and authentication.
 
 ## Below is an example of list of requirements
@@ -23,7 +25,7 @@ You have a mobile app that needs to authenticate users using Azure AD B2C. You w
 * Retrieve the user's access token and use it to call an API.
 * Navigate to a different screen/route after successful login.
 
-We can do this by using the Azure AD B2C's default view, which is a web view that redirects to the Azure AD B2C's login page in a browser of your choise, and then redirects back to the app after the user has logged in.
+We can do this by using the Azure AD B2C's default view, which is a web view that redirects to the Azure AD B2C's login page in a browser of your choice, and then redirects back to the app after the user has logged in.
 
 There are several Flutter packages available for this, one of them being [flutter_appauth](https://pub.dev/packages/flutter_appauth)
 This package is a wrapper around the [AppAuth](https://appauth.io/) library, which is a library that allows you to authenticate users using OAuth 2.0 and OpenID Connect.
@@ -101,10 +103,10 @@ class LoginScreen extends ConsumerWidget {
 
 When the onPressed method is clicked, it calls the authorizeAndExchangeCode method of the FlutterAppAuth class, which redirects the user to the browser, and then back to the app after the user has logged in.
 
-This approach has a few drawbacks:
+This approach has few drawbacks:
 * The user is redirected to the browser, and then back to the app, which is not a great user experience.
-*  The user's token is stored in the browser's cache, which is not secure.
-*  For a successful redirection to the app, we have to define a appAuthRedirectScheme in build.gradle file. For example: redirect URL becomes com.example.authapp://oauthredirect where "oauthredirect" is the callback required by app auth.
+* The user's token is stored in the browser's cache, which is not secure.
+* For a successful redirection to the app, we have to define a appAuthRedirectScheme in build.gradle file. For example: redirect URL becomes com.example.authapp://oauthredirect where "oauthredirect" is the callback required by app auth.
 
 Now, let's see how we can achieve the same using Azure AD B2C's embedded web view.
 
