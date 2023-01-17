@@ -13,8 +13,9 @@ void main() {
   test('testing embed weview', () {
     embedWebView = ADB2CEmbedWebView(
         url: '',
+        clientId: '',
         redirectUrl: '',
-        redirectRoute: '',
+        appRedirectRoute: '',
         onRedirect: (BuildContext context) {});
     mockContext = MockBuildContext();
     var mockEmbedWebViewstate = embedWebView.createState().build(mockContext);

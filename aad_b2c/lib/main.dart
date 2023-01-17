@@ -10,8 +10,7 @@ onRedirect(BuildContext context) {
 }
 
 class MyApp extends StatelessWidget {
-  static const authFlowUrl =
-      '<user_flow_endpoint>';
+  static const authFlowUrl = '<user_flow_endpoint>';
   static const redirectUrl = '<redirect_url>';
 
   const MyApp({super.key});
@@ -52,7 +51,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const ADB2CEmbedWebView(
               url: authFlowUrl,
               redirectUrl: redirectUrl,
-              redirectRoute: '/',
+              appRedirectRoute: '/',
+              clientId: '<client_id>',
               onRedirect: onRedirect,
             ),
       },
