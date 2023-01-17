@@ -265,7 +265,7 @@ Widget build(BuildContext context) {
 * onRedirect: This is the callback method to handle the redirect url. This method is called when the redirect url is hit. This method should return the route to navigate to after successful sign in.
 
 ## Conclusion
-Hope this article helps you to understand how to achieve embedded web view experience in Flutter. This approach is very easy to implement and gives a great user experience.
+Hope this article helps you understand how to achieve embedded web view experience in Flutter. This approach is very easy to implement and gives a great user experience.
 We are now trying to achieve the same experience in React Native. We will share the article soon.
 
 
