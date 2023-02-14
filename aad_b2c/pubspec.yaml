@@ -31,6 +31,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  aad_b2c_webview:
+    path: ../
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -39,9 +42,7 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
-  aad_b2c_webview:
-    path: ../
+    sdk: flutter  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

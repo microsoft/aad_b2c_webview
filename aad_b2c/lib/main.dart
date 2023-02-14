@@ -29,13 +29,13 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w700,
             fontFamily: 'UberMove',
           ),
-          bodyText1: TextStyle(
+          bodyLarge: TextStyle(
             color: Color(0xFF8A8A8A),
             fontSize: 17,
             fontWeight: FontWeight.w400,
             fontFamily: 'UberMoveText',
           ),
-          headline2: TextStyle(
+          headlineMedium: TextStyle(
             fontSize: 18,
             color: Colors.black,
             fontWeight: FontWeight.w700,
