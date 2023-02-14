@@ -10,8 +10,9 @@ onRedirect(BuildContext context) {
 }
 
 class MyApp extends StatelessWidget {
-  static const authFlowUrl = '<user_flow_endpoint>';
-  static const redirectUrl = '<redirect_url>';
+  static const String authFlowUrl = '<user_flow_endpoint>';
+  static const String redirectUrl = '<redirect_url>';
+  static const String clientId = '<client_id>';
 
   const MyApp({super.key});
 
@@ -49,10 +50,10 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/" route, build the Create Account widget.
 
         '/': (context) => const ADB2CEmbedWebView(
-              url: authFlowUrl,
-              redirectUrl: redirectUrl,
+              url: MyApp.authFlowUrl,
+              redirectUrl: MyApp.redirectUrl,
               appRedirectRoute: '/',
-              clientId: '<client_id>',
+              clientId: MyApp.clientId,
               onRedirect: onRedirect,
             ),
       },
