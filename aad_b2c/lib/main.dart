@@ -10,9 +10,10 @@ onRedirect(BuildContext context) {
 }
 
 class MyApp extends StatelessWidget {
-  static const String authFlowUrl = '<user_flow_endpoint>';
-  static const String redirectUrl = '<redirect_url>';
-  static const String clientId = '<client_id>';
+  static const String authFlowUrl =
+      'https://dinkotestorg.b2clogin.com/dinkotestorg.onmicrosoft.com/B2C_1_login-register/oauth2/v2.0/authorize';
+  static const String redirectUrl = 'https://jwt.ms';
+  static const String clientId = '87a90db8-3f52-4546-b719-43f232a4c1f8';
 
   const MyApp({super.key});
 
@@ -28,19 +29,16 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
             fontSize: 32,
             fontWeight: FontWeight.w700,
-            fontFamily: 'UberMove',
           ),
           bodyLarge: TextStyle(
             color: Color(0xFF8A8A8A),
             fontSize: 17,
             fontWeight: FontWeight.w400,
-            fontFamily: 'UberMoveText',
           ),
           headlineMedium: TextStyle(
             fontSize: 18,
             color: Colors.black,
             fontWeight: FontWeight.w700,
-            fontFamily: 'UberMove',
           ),
         ),
       ),
