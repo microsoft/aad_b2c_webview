@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future<void> main() async {
+  // To load the .env file contents into dotenv.
+  // NOTE: fileName defaults to .env and can be omitted in this case.
+  // Ensure that the filename corresponds to the path in step 1 and 2.
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -10,10 +16,9 @@ onRedirect(BuildContext context) {
 }
 
 class MyApp extends StatelessWidget {
-  static const String authFlowUrl =
-      'https://dinkotestorg.b2clogin.com/dinkotestorg.onmicrosoft.com/B2C_1_login-register/oauth2/v2.0/authorize';
-  static const String redirectUrl = 'https://jwt.ms';
-  static const String clientId = '87a90db8-3f52-4546-b719-43f232a4c1f8';
+  static String clientId = dotenv.env['CLIENT_ID'] ?? '';
+  static String redirectUrl = dotenv.env['REDIRECT_URL'] ?? '';
+  static String authFlowUrl = dotenv.env['SIGNUP_SIGNIIN_USER_FLOW_URL'] ?? '';
 
   const MyApp({super.key});
 
@@ -47,7 +52,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the Create Account widget.
 
-        '/': (context) => const ADB2CEmbedWebView(
+        '/': (context) => ADB2CEmbedWebView(
               url: MyApp.authFlowUrl,
               redirectUrl: MyApp.redirectUrl,
               appRedirectRoute: '/',
