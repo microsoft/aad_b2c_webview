@@ -65,7 +65,7 @@ class MyLoginPage extends StatelessWidget {
 Simply call page direct or use custom build sign in button to call webview page
 
 ```dart
-import 'package:aad_b2c_webview/src/login_azure.dart';
+import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 
 class MyLoginPage extends StatelessWidget {
   const MyLoginPage({Key? key}) : super(key: key);
