@@ -12,10 +12,9 @@ void main() {
 
   test('testing embed webview', () {
     embedWebView = ADB2CEmbedWebView(
-        url: '',
+        userFlowUrl: '',
         clientId: '',
         redirectUrl: '',
-        appRedirectRoute: '',
         onRedirect: (BuildContext context) {});
     mockContext = MockBuildContext();
     var mockEmbedWebViewstate = embedWebView.createState().build(mockContext);
@@ -28,10 +27,9 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AADLoginButton(
-            url: '',
+            userFlowUrl: '',
             clientId: '',
             redirectUrl: '',
-            appRedirectRoute: '',
             context: null,
             onRedirect: (BuildContext context) {}),
       ),

@@ -4,10 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AADLoginButton extends StatefulWidget {
-  final String url;
+  final String userFlowUrl;
   final String clientId;
   final String redirectUrl;
-  final String appRedirectRoute;
   final Function(BuildContext context)? onRedirect;
   final BuildContext? context;
   final ValueChanged<String>? onAccessToken;
@@ -15,10 +14,9 @@ class AADLoginButton extends StatefulWidget {
   final ValueChanged<String>? onRefreshToken;
   const AADLoginButton({
     super.key,
-    required this.url,
+    required this.userFlowUrl,
     required this.clientId,
     required this.redirectUrl,
-    required this.appRedirectRoute,
     this.onRedirect,
     required this.context,
     this.onAccessToken,
@@ -43,10 +41,9 @@ class _AADLoginButtonState extends State<AADLoginButton> {
           MaterialPageRoute(
             builder: (context) {
               return ADB2CEmbedWebView(
-                url: widget.url,
+                userFlowUrl: widget.userFlowUrl,
                 clientId: widget.clientId,
                 redirectUrl: widget.redirectUrl,
-                appRedirectRoute: widget.appRedirectRoute,
                 onRedirect: widget.onRedirect,
                 onAccessToken: (accessToken) {
                   widget.onAccessToken!(accessToken);

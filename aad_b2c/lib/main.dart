@@ -49,9 +49,8 @@ class MyApp extends StatelessWidget {
         // When navigating to the "/" route, build the Create Account widget.
 
         '/': (context) => const ADB2CEmbedWebView(
-              url: authFlowUrl,
+              userFlowUrl: authFlowUrl,
               redirectUrl: redirectUrl,
-              appRedirectRoute: '/',
               clientId: '<client_id>',
               onRedirect: onRedirect,
             ),

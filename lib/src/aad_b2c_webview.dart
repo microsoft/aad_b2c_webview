@@ -7,10 +7,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../src/constants.dart';
 
 class ADB2CEmbedWebView extends StatefulWidget {
-  final String url;
+  final String userFlowUrl;
   final String clientId;
   final String redirectUrl;
-  final String appRedirectRoute;
   final Function(BuildContext context)? onRedirect;
   final ValueChanged<String>? onAccessToken;
   final ValueChanged<String>? onIDToken;
@@ -19,10 +18,9 @@ class ADB2CEmbedWebView extends StatefulWidget {
 
   const ADB2CEmbedWebView({
     super.key,
-    required this.url,
+    required this.userFlowUrl,
     required this.clientId,
     required this.redirectUrl,
-    required this.appRedirectRoute,
     this.onRedirect,
     this.onAccessToken,
     this.onIDToken,
@@ -51,10 +49,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   @override
   void initState() {
     super.initState();
-    userFlowUrl = widget.url;
+    userFlowUrl = widget.userFlowUrl;
     clientId = widget.clientId;
     redirectUrl = widget.redirectUrl;
-    redirectRoute = widget.appRedirectRoute;
     onRedirect = widget.onRedirect ??
         () {
           Navigator.of(context).pop();
