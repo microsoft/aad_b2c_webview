@@ -48,13 +48,29 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the Create Account widget.
 
-        '/': (context) => const ADB2CEmbedWebView(
-              userFlowUrl: authFlowUrl,
-              redirectUrl: redirectUrl,
-              clientId: '<client_id>',
-              onRedirect: onRedirect,
-            ),
+        '/': (context) => const LoginPage(),
       },
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: AADLoginButton(
+            userFlowUrl: 'userFlowUrl',
+            clientId: 'clientId',
+            redirectUrl: 'redirectUrl',
+            context: context,
+          ),
+        ),
+      ),
     );
   }
 }

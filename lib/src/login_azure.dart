@@ -1,6 +1,5 @@
 import 'package:aad_b2c_webview/src/aad_b2c_webview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AADLoginButton extends StatefulWidget {
@@ -86,14 +85,13 @@ class _AADLoginButtonState extends State<AADLoginButton> {
                   textDirection: TextDirection.ltr,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  width: 20.0,
-                ),
+                const Spacer(),
                 SizedBox(
                   width: 20,
                   height: 20,
-                  child: SvgPicture.asset(
-                    'assets/windows-windows-svgrepo-com.svg',
+                  child: Image.asset(
+                    'assets/icons8-azure-48.png',
+                    package: 'aad_b2c_webview',
                   ),
                 ),
               ],
