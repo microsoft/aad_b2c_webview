@@ -64,9 +64,9 @@ class LoginPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: AADLoginButton(
-            userFlowUrl: 'userFlowUrl',
-            clientId: 'clientId',
-            redirectUrl: 'redirectUrl',
+            userFlowUrl: '<user-flow-url>',
+            clientId: '<client-id>',
+            redirectUrl: '<redirect-url>',
             context: context,
           ),
         ),

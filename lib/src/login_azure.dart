@@ -11,6 +11,9 @@ class AADLoginButton extends StatefulWidget {
   final ValueChanged<String>? onAccessToken;
   final ValueChanged<String>? onIDToken;
   final ValueChanged<String>? onRefreshToken;
+  final bool useImage;
+  final String? title;
+  final TextStyle? style;
   const AADLoginButton({
     super.key,
     required this.userFlowUrl,
@@ -21,11 +24,12 @@ class AADLoginButton extends StatefulWidget {
     this.onAccessToken,
     this.onIDToken,
     this.onRefreshToken,
-  });
-  // : assert(url != ''),
-  //   assert(clientId != ''),
-  //   assert(redirectUrl != ''),
-  //   assert(appRedirectRoute != '');
+    this.useImage = true,
+    this.title,
+    this.style,
+  })  : assert(userFlowUrl != ''),
+        assert(clientId != ''),
+        assert(redirectUrl != '');
 
   @override
   State<AADLoginButton> createState() => _AADLoginButtonState();
@@ -59,9 +63,9 @@ class _AADLoginButtonState extends State<AADLoginButton> {
         );
       },
       child: Material(
-        elevation: 8.0,
+        elevation: 4.0,
         borderRadius: BorderRadius.circular(
-          8.0,
+          6.0,
         ),
         color: Colors.white,
         child: Container(
@@ -79,21 +83,26 @@ class _AADLoginButtonState extends State<AADLoginButton> {
             child: Row(
               textDirection: TextDirection.ltr,
               children: [
-                Text(
-                  'Login with Azure AD',
-                  style: GoogleFonts.nunito(),
-                  textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.center,
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: Image.asset(
-                    'assets/icons8-azure-48.png',
-                    package: 'aad_b2c_webview',
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    widget.title ?? 'Login with Azure AD',
+                    style: widget.style ?? GoogleFonts.nunito(),
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.center,
                   ),
                 ),
+                if (widget.useImage)
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: Image.asset(
+                      'assets/icons8-azure-48.png',
+                      package: 'aad_b2c_webview',
+                    ),
+                  )
+                else
+                  const SizedBox.shrink(),
               ],
             ),
           ),
