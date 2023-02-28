@@ -17,53 +17,82 @@ Navigates to screen in app after successful sign in
 To use the package in your Flutter app, add the following code to your main.dart file:
 ```yaml
 dependencies:
-  aad_b2c_webview: ^0.0.1
+  aad_b2c_webview: <latest_version>
 ```
 
 ## Usage
 
-Example added in aad-b2c-webview/aad_b2c folder
+### Simple In-built Sign In Button
+
+To add the easy to use sign in with microsoft button simply use the AADLoginButton widget 
+and a beautiful sign in button appears as shown below.
 
 ```dart
-@override
-Widget build(BuildContext context) {
-  return MaterialApp(
-    title: 'Flutter Demo',
-    theme: ThemeData(
-      primaryColor: const Color(0xFF2F56D2),
-      textTheme: const TextTheme(
-        headlineLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 32,
-          fontWeight: FontWeight.w700,
-          fontFamily: 'UberMove',
-        ),
-        bodyText1: TextStyle(
-          color: Color(0xFF8A8A8A),
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          fontFamily: 'UberMoveText',
-        ),
-        headline2: TextStyle(
-          fontSize: 18,
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontFamily: 'UberMove',
-        ),
-      ),
-    ),
-    debugShowCheckedModeBanner: false,
-    initialRoute: '/',
-    routes: {
-      // When navigating to the "/" route, build the Create Account widget.
+import 'package:aad_b2c_webview/src/login_azure.dart';
 
-      '/': (context) => const ADB2CEmbedWebView(
-        url: '<user_flow_endpoint>',
-        redirectUrl: '<redirect_uri_of_user_flow>',
-        redirectRoute: '<route_to_redirect_to_after_sign_in>',
-        onRedirect: onRedirect,
+class MyLoginPage extends StatelessWidget {
+  const MyLoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AADLoginButton(
+        userFlowUrl: '<user_flow_endpoint>',
+        redirectUrl: '<redirect_url>',
+        clientId: '<client_id>',
+        onRedirect: (BuildContext context){
+          ///Handle navigation to whatever page you choose
+          ///Use the build context for navigation
+        },
+        context: context,
+        onAccessToken: (value) {
+          ///Store or use access token from here
+        },
+        onIDToken: (value) {
+          ///Store or use ID token from here
+        },
+        onRefreshToken: (value) {
+          ///Store or use refresh token from here
+        },
       ),
-    },
-  );
+    );
+  }
+}
+```
+
+### Custom Sign in
+
+Simply call page direct or use custom build sign in button to call webview page
+
+```dart
+import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+
+class MyLoginPage extends StatelessWidget {
+  const MyLoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ADB2CEmbedWebView(
+        userFlowUrl: '<user_flow_endpoint>',
+        redirectUrl: '<redirect_url>',
+        clientId: '<client_id>',
+        onRedirect: (BuildContext context){
+          ///Handle navigation to whatever page you choose
+          ///Use the build context for navigation
+        },
+        context: context,
+        onAccessToken: (value) {
+          ///Store or use access token from here
+        },
+        onIDToken: (value) {
+          ///Store or use ID token from here
+        },
+        onRefreshToken: (value) {
+          ///Store or use refresh token from here
+        },
+      ),
+    );
+  }
 }
 ```

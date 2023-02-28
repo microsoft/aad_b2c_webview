@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,14 +48,29 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the Create Account widget.
 
-        '/': (context) => const ADB2CEmbedWebView(
-              url: authFlowUrl,
-              redirectUrl: redirectUrl,
-              appRedirectRoute: '/',
-              clientId: '<client_id>',
-              onRedirect: onRedirect,
-            ),
+        '/': (context) => const LoginPage(),
       },
+    );
+  }
+}
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: AADLoginButton(
+            userFlowUrl: '<user-flow-url>',
+            clientId: '<client-id>',
+            redirectUrl: '<redirect-url>',
+            context: context,
+          ),
+        ),
+      ),
     );
   }
 }
