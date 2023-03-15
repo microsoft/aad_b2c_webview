@@ -64,10 +64,13 @@ class LoginPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: AADLoginButton(
-            userFlowUrl: '<user-flow-url>',
+            userFlowUrl:
+                '<https://<tenant_id>.b2clogin.com/<tenant_id>.onmicrosoft.com/oauth2/v2.0/authorize>',
             clientId: '<client-id>',
+            userFlowName: 'B2C_<Name_of_UserFlow>',
             redirectUrl: '<redirect-url>',
             context: context,
+            scopes: const ['openId'],
           ),
         ),
       ),

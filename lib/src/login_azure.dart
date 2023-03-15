@@ -14,6 +14,8 @@ class AADLoginButton extends StatefulWidget {
   final bool useImage;
   final String? title;
   final TextStyle? style;
+  final List<String> scopes;
+  final String userFlowName;
   const AADLoginButton({
     super.key,
     required this.userFlowUrl,
@@ -27,7 +29,10 @@ class AADLoginButton extends StatefulWidget {
     this.useImage = true,
     this.title,
     this.style,
+    required this.scopes,
+    required this.userFlowName,
   })  : assert(userFlowUrl != ''),
+        assert(userFlowName != ''),
         assert(clientId != ''),
         assert(redirectUrl != '');
 
@@ -45,6 +50,7 @@ class _AADLoginButtonState extends State<AADLoginButton> {
             builder: (context) {
               return ADB2CEmbedWebView(
                 userFlowUrl: widget.userFlowUrl,
+                userFlowName: widget.userFlowName,
                 clientId: widget.clientId,
                 redirectUrl: widget.redirectUrl,
                 onRedirect: widget.onRedirect,
@@ -57,6 +63,7 @@ class _AADLoginButtonState extends State<AADLoginButton> {
                 onRefreshToken: (refreshToken) {
                   widget.onRefreshToken!(refreshToken);
                 },
+                scopes: widget.scopes,
               );
             },
           ),

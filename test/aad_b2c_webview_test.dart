@@ -12,10 +12,13 @@ void main() {
 
   test('testing embed webview', () {
     embedWebView = ADB2CEmbedWebView(
-        userFlowUrl: '',
-        clientId: '',
-        redirectUrl: '',
-        onRedirect: (BuildContext context) {});
+      userFlowUrl: '',
+      userFlowName: '',
+      clientId: '',
+      redirectUrl: '',
+      onRedirect: (BuildContext context) {},
+      scopes: const ['openId'],
+    );
     mockContext = MockBuildContext();
     var mockEmbedWebViewstate = embedWebView.createState().build(mockContext);
 
@@ -27,11 +30,14 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AADLoginButton(
-            userFlowUrl: '',
-            clientId: '',
-            redirectUrl: '',
-            context: null,
-            onRedirect: (BuildContext context) {}),
+          userFlowUrl: '',
+          userFlowName: '',
+          clientId: '',
+          redirectUrl: '',
+          context: null,
+          onRedirect: (BuildContext context) {},
+          scopes: const ['openId'],
+        ),
       ),
     );
 
