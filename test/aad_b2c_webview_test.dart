@@ -30,14 +30,13 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AADLoginButton(
-          userFlowUrl:
-              'https://icecatalyst.b2clogin.com/icecatalyst.onmicrosoft.com/oauth2/v2.0/authorize',
-          userFlowName: 'B2C_1_signinup',
-          clientId: 'eeadda00-56a9-4345-967c-07e3aa8b1cee',
-          redirectUrl: 'https://jwt.ms',
+          userFlowUrl: '',
+          userFlowName: '',
+          clientId: '',
+          redirectUrl: '',
           context: null,
           onRedirect: (BuildContext context) {},
-          scopes: const ['openid', 'https://graph.microsoft.com/User.Read'],
+          scopes: const ['openId'],
         ),
       ),
     );
