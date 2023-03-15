@@ -10,11 +10,14 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final String userFlowUrl;
   final String clientId;
   final String redirectUrl;
+  final String userFlowName;
   final Function(BuildContext context)? onRedirect;
   final ValueChanged<String>? onAccessToken;
   final ValueChanged<String>? onIDToken;
   final ValueChanged<String>? onAuthToken;
   final ValueChanged<String>? onRefreshToken;
+  final List<String> scopes;
+  final String? responseType;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -26,6 +29,9 @@ class ADB2CEmbedWebView extends StatefulWidget {
     this.onIDToken,
     this.onAuthToken,
     this.onRefreshToken,
+    required this.scopes,
+    this.responseType,
+    required this.userFlowName,
   });
 
   @override
@@ -39,12 +45,15 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   String redirectUrl = '';
   String redirectRoute = '';
   String clientId = '';
+  String userFlowName = '';
   final _key = UniqueKey();
   Function onRedirect = () {};
   ValueChanged<String>? onAccessToken;
   ValueChanged<String>? onIDToken;
   ValueChanged<String>? onAuthToken;
   ValueChanged<String>? onRefreshToken;
+  List<String> scopes = [];
+  String responseType = '';
 
   @override
   void initState() {
@@ -60,6 +69,10 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     onIDToken = widget.onIDToken;
     onAuthToken = widget.onAuthToken;
     onRefreshToken = widget.onRefreshToken;
+    scopes = widget.scopes;
+    responseType = widget.responseType ?? "id_token";
+    userFlowName = widget.userFlowName;
+
     //Enable virtual display.
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
@@ -111,7 +124,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
           WebView(
             key: _key,
             debuggingEnabled: true,
-            initialUrl: userFlowUrl,
+            initialUrl: getUserFlowUrl(userFlowUrl),
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (String url) {
               setState(() {
@@ -147,5 +160,45 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         ],
       ),
     );
+  }
+
+  String getUserFlowUrl(String userFlow) {
+    List<String>? userFlowSplit = userFlow.split('?');
+    //Check if the user added the full user flow or just till 'authorize'
+    if (userFlowSplit.length == 1) {
+      return concatUserFlow(userFlow);
+    }
+    return userFlow;
+  }
+
+  String createScopes(List<String> scopeList) {
+    String allScope = '';
+    for (String scope in scopeList) {
+      scope += '%20';
+      allScope += scope;
+    }
+    return allScope.substring(0, allScope.length - 3);
+  }
+
+  String concatUserFlow(String url) {
+    const idClientParam = '&client_id=';
+    const nonceParam = '&nonce=defaultNonce&redirect_uri=';
+    const scopeParam = '&scope=';
+    const responseTypeParam = '&response_type=';
+    const promptParam = '&prompt=login';
+    const pageParam = '?p=';
+
+    return url +
+        pageParam +
+        userFlowName +
+        idClientParam +
+        clientId +
+        nonceParam +
+        redirectUrl +
+        scopeParam +
+        createScopes(scopes) +
+        responseTypeParam +
+        responseType +
+        promptParam;
   }
 }

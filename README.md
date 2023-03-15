@@ -37,9 +37,11 @@ class MyLoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AADLoginButton(
-        userFlowUrl: '<user_flow_endpoint>',
+        userFlowUrl:
+        '<https://<tenant_id>.b2clogin.com/<tenant_id>.onmicrosoft.com/oauth2/v2.0/authorize>',
+        clientId: '<client-id>',
+        userFlowName: 'B2C_<Name_of_UserFlow>',
         redirectUrl: '<redirect_url>',
-        clientId: '<client_id>',
         onRedirect: (BuildContext context){
           ///Handle navigation to whatever page you choose
           ///Use the build context for navigation
@@ -74,9 +76,11 @@ class MyLoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ADB2CEmbedWebView(
-        userFlowUrl: '<user_flow_endpoint>',
+        userFlowUrl:
+        '<https://<tenant_id>.b2clogin.com/<tenant_id>.onmicrosoft.com/oauth2/v2.0/authorize>',
+        clientId: '<client-id>',
+        userFlowName: 'B2C_<Name_of_UserFlow>',
         redirectUrl: '<redirect_url>',
-        clientId: '<client_id>',
         onRedirect: (BuildContext context){
           ///Handle navigation to whatever page you choose
           ///Use the build context for navigation
