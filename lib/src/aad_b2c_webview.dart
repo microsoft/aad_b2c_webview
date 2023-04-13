@@ -89,7 +89,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   }
 
   authorizationCodeFlow(url) async {
-    String authCode = url.split(Constants.authCode)[1];
+    String authCode = url.split("${Constants.authCode}=")[1];
 
     ClientAuthentication clientAuthentication =
         ClientAuthentication(pkcePair: pkcePairInstance);
