@@ -1,4 +1,5 @@
 import 'package:aad_b2c_webview/src/constants.dart';
+import 'package:aad_b2c_webview/src/response_data.dart';
 import 'package:dio/dio.dart';
 import 'package:pkce/pkce.dart';
 
@@ -31,7 +32,7 @@ class ClientAuthentication {
     // }
   }
 
-  Future<Response> getAllTokens({
+  Future<TokenResponseDataModel?> getAllTokens({
     required String redirectUri,
     required String clientId,
     required String authCode,
@@ -41,16 +42,22 @@ class ClientAuthentication {
     String grantType = Constants.defaultGrantType,
   }) async {
     var url = "$tenantBaseUrl/$userFlowName/${Constants.userGetTokenUrlEnding}";
-    var response = await Dio().post(url,
-        data: {
-          'scope': scopes,
-          'grant_type': grantType,
-          'code': authCode,
-          'client_id': clientId,
-          'code_verifier': pkcePair.codeVerifier,
-          'redirect_uri': redirectUri,
-        },
-        options: Options(contentType: Headers.formUrlEncodedContentType));
-    return response;
+    var response = await Dio().post(
+      url,
+      data: {
+        'scope': scopes,
+        'grant_type': grantType,
+        'code': authCode,
+        'client_id': clientId,
+        'code_verifier': pkcePair.codeVerifier,
+        'redirect_uri': redirectUri,
+      },
+      options: Options(contentType: Headers.formUrlEncodedContentType),
+    );
+    if (response.statusCode == 200) {
+      return TokenResponseDataModel.fromJson(response.data);
+    } else {
+      return null;
+    }
   }
 }

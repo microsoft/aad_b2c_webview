@@ -12,6 +12,9 @@ void main() {
 
   test('testing embed webview', () {
     embedWebView = ADB2CEmbedWebView(
+      onAccessToken: (_) {},
+      onIDToken: (_) {},
+      onRefreshToken: (_) {},
       tenantBaseUrl: '',
       userFlowName: '',
       clientId: '',
@@ -30,6 +33,9 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AADLoginButton(
+          onAccessToken: (_) {},
+          onIDToken: (_) {},
+          onRefreshToken: (_) {},
           userFlowUrl: '',
           userFlowName: '',
           clientId: '',

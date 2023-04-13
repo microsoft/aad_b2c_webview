@@ -1,4 +1,5 @@
 import 'package:aad_b2c_webview/src/src.dart';
+import 'package:aad_b2c_webview/src/token.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,9 +10,10 @@ class AADLoginButton extends StatefulWidget {
 
   final Function(BuildContext context)? onRedirect;
   final BuildContext? context;
-  final ValueChanged<String>? onAccessToken;
-  final ValueChanged<String>? onIDToken;
-  final ValueChanged<String>? onRefreshToken;
+  final ValueChanged<Token> onAccessToken;
+  final ValueChanged<Token> onIDToken;
+  final ValueChanged<Token> onRefreshToken;
+  final ValueChanged<Token>? onAnyTokenRetrieved;
   final bool useImage;
   final String? title;
   final TextStyle? style;
@@ -26,11 +28,12 @@ class AADLoginButton extends StatefulWidget {
     required this.scopes,
     required this.userFlowName,
     required this.context,
+    required this.onAccessToken,
+    required this.onIDToken,
+    required this.onRefreshToken,
+    this.onAnyTokenRetrieved,
     this.responseType = Constants.defaultResponseType,
     this.onRedirect,
-    this.onAccessToken,
-    this.onIDToken,
-    this.onRefreshToken,
     this.useImage = true,
     this.title,
     this.style,
@@ -58,14 +61,19 @@ class _AADLoginButtonState extends State<AADLoginButton> {
                 clientId: widget.clientId,
                 redirectUrl: widget.redirectUrl,
                 onRedirect: widget.onRedirect,
+                onAnyTokenRetrieved: (value) {
+                  if (widget.onAnyTokenRetrieved != null) {
+                    widget.onAnyTokenRetrieved!(value);
+                  }
+                },
                 onAccessToken: (accessToken) {
-                  widget.onAccessToken!(accessToken);
+                  widget.onAccessToken(accessToken);
                 },
                 onIDToken: (idToken) {
-                  widget.onIDToken!(idToken);
+                  widget.onIDToken(idToken);
                 },
                 onRefreshToken: (refreshToken) {
-                  widget.onRefreshToken!(refreshToken);
+                  widget.onRefreshToken(refreshToken);
                 },
                 scopes: widget.scopes,
               );

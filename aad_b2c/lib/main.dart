@@ -63,7 +63,8 @@ class LoginPage extends StatelessWidget {
     const aadB2CRedirectURL = "<azure_active_directory_url_redirect>";
     const aadB2CUserFlowName = "B2C_<name_of_userflow>";
     const aadB2CScopes = ['openid', 'offline_access'];
-    const aadB2CUserAuthFlow = "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
+    const aadB2CUserAuthFlow =
+        "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
 
     return Scaffold(
       body: Center(
@@ -76,18 +77,20 @@ class LoginPage extends StatelessWidget {
             redirectUrl: aadB2CRedirectURL,
             context: context,
             scopes: aadB2CScopes,
+            onAnyTokenRetrieved: (anyToken) {
+              print(
+                  "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
+            },
             onIDToken: (idToken) {
-
+              print("Id Token: $idToken");
             },
             onAccessToken: (accessToken) {
-
+              print("Access token: $accessToken");
             },
             onRefreshToken: (refreshToken) {
-
+              print("Refresh token: $refreshToken");
             },
-            onRedirect: (context) => {
-
-            },
+            onRedirect: (context) => {},
           ),
         ),
       ),

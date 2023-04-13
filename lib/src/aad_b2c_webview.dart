@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:aad_b2c_webview/src/client_authentication.dart';
+import 'package:aad_b2c_webview/src/response_data.dart';
+import 'package:aad_b2c_webview/src/token.dart';
 import 'package:flutter/material.dart';
 import 'package:pkce/pkce.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../src/constants.dart';
-
-enum TokenType { accessToken, idToken, refreshToken }
 
 class ADB2CEmbedWebView extends StatefulWidget {
   final String tenantBaseUrl;
@@ -14,10 +14,10 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final String redirectUrl;
   final String userFlowName;
   final Function(BuildContext context)? onRedirect;
-  final ValueChanged<String>? onAccessToken;
-  final ValueChanged<String>? onIDToken;
-  final ValueChanged<String>? onAuthToken;
-  final ValueChanged<String>? onRefreshToken;
+  final ValueChanged<Token> onAccessToken;
+  final ValueChanged<Token> onIDToken;
+  final ValueChanged<Token> onRefreshToken;
+  final ValueChanged<Token>? onAnyTokenRetrieved;
   final List<String> scopes;
   final String responseType;
 
@@ -29,12 +29,14 @@ class ADB2CEmbedWebView extends StatefulWidget {
     required this.redirectUrl,
     required this.userFlowName,
     required this.scopes,
+    required this.onAccessToken,
+    required this.onIDToken,
+    required this.onRefreshToken,
+
     // Optionals
     this.onRedirect,
-    this.onAccessToken,
-    this.onIDToken,
-    this.onAuthToken,
-    this.onRefreshToken,
+    this.onAnyTokenRetrieved,
+
     // Optionals with default value
     this.responseType = Constants.defaultResponseType,
   });
@@ -53,7 +55,6 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
 
   @override
   void initState() {
-    super.initState();
     onRedirect = widget.onRedirect ??
         () {
           Navigator.of(context).pop();
@@ -61,30 +62,38 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
 
     //Enable virtual display.
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    super.initState();
   }
 
-  // Avoid calling callbacks when null values are present
-  void handleTokenCallback(
-      {required String? token, required TokenType tokenType}) {
-    if (token != null) {
-      switch (tokenType) {
-        case TokenType.accessToken:
-          if (widget.onAccessToken != null) {
-            widget.onAccessToken!(token);
-          }
-          break;
-        case TokenType.idToken:
-          if (widget.onIDToken != null) {
-            widget.onIDToken!(token);
-          }
-          break;
-        case TokenType.refreshToken:
-          if (widget.onRefreshToken != null) {
-            widget.onRefreshToken!(token);
-          }
+  void onAnyTokenRecivedCallback(Token token) {
+    if (widget.onAnyTokenRetrieved != null) {
+      widget.onAnyTokenRetrieved!(token);
+    }
+  }
 
-          break;
-      }
+  void handleTokenCallbacks({required TokenResponseDataModel? tokensData}) {
+    String? accessTokenValue = tokensData?.accessToken;
+    String? idTokenValue = tokensData?.idToken;
+    String? refreshTokenValue = tokensData?.refreshToken;
+
+    if (accessTokenValue != null) {
+      final Token token =
+          Token(type: TokenType.accessToken, value: accessTokenValue);
+      widget.onAccessToken(token);
+      onAnyTokenRecivedCallback(token);
+    }
+
+    if (idTokenValue != null) {
+      final token = Token(type: TokenType.idToken, value: idTokenValue);
+      widget.onIDToken(token);
+      onAnyTokenRecivedCallback(token);
+    }
+
+    if (refreshTokenValue != null) {
+      final Token token =
+          Token(type: TokenType.refreshToken, value: refreshTokenValue);
+      widget.onRefreshToken(token);
+      onAnyTokenRecivedCallback(token);
     }
   }
 
@@ -94,7 +103,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     ClientAuthentication clientAuthentication =
         ClientAuthentication(pkcePair: pkcePairInstance);
 
-    final response = await clientAuthentication.getAllTokens(
+    final TokenResponseDataModel? tokensData =
+        await clientAuthentication.getAllTokens(
       redirectUri: widget.redirectUrl,
       clientId: widget.clientId,
       authCode: authCode,
@@ -102,19 +112,10 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
       tenantBaseUrl: widget.tenantBaseUrl,
     );
 
-    if (response.statusCode == 200) {
-      handleTokenCallback(
-          tokenType: TokenType.accessToken,
-          token: response.data[Constants.accessToken]);
-      handleTokenCallback(
-          tokenType: TokenType.idToken,
-          token: response.data[Constants.idToken]);
-      handleTokenCallback(
-          tokenType: TokenType.refreshToken,
-          token: response.data[Constants.refreshToken]);
-
+    if (tokensData != null) {
       if (!mounted) return;
-      //call redirect function
+      // call redirect function
+      handleTokenCallbacks(tokensData: tokensData);
       onRedirect(context);
     }
   }
@@ -122,18 +123,11 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   onPageFinishedTasks(String url, Uri response) {
     if (response.path.contains(widget.redirectUrl)) {
       if (url.contains(Constants.idToken)) {
-        handleTokenCallback(
-            token: url.split(Constants.idToken)[1],
-            tokenType: TokenType.idToken);
         //Navigate to the redirect route screen; check for mounted component
         if (!mounted) return;
         //call redirect function
         onRedirect(context);
       } else if (url.contains(Constants.accessToken)) {
-        handleTokenCallback(
-            token: url.split(Constants.accessToken)[1],
-            tokenType: TokenType.accessToken);
-
         //Navigate to the redirect route screen; check for mounted component
         if (!mounted) return;
         //call redirect function
