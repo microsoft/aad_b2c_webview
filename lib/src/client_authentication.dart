@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:pkce/pkce.dart';
 
 class ClientAuthentication {
-  final pkcePair = PkcePair.generate();
+  final PkcePair pkcePair;
+  ClientAuthentication({required this.pkcePair});
 
   regenerateAccessToken() async {
     // try {
@@ -30,18 +31,26 @@ class ClientAuthentication {
     // }
   }
 
-  Future<Response> getAllTokens(
-      String redirectUri, String clientId, String authCode) async {
-    var response = await Dio().post(
-      Constants.policyTokenUrl,
-      data: {
-        'grant_type': 'authorization_code',
-        'code': authCode,
-        'client_id': clientId,
-        'code_verifier': pkcePair.codeVerifier,
-        'redirect_uri': redirectUri,
-      },
-    );
+  Future<Response> getAllTokens({
+    required String redirectUri,
+    required String clientId,
+    required String authCode,
+    required String userFlowName,
+    required String tenantBaseUrl,
+    String scopes = Constants.defaultScopes,
+    String grantType = Constants.defaultGrantType,
+  }) async {
+    var url = "$tenantBaseUrl$userFlowName/oauth2/v2.0/token";
+    var response = await Dio().post(url,
+        data: {
+          'scope': scopes,
+          'grant_type': grantType,
+          'code': authCode,
+          'client_id': clientId,
+          'code_verifier': pkcePair.codeVerifier,
+          'redirect_uri': redirectUri,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType));
     return response;
   }
 }

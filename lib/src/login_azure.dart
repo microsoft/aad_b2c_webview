@@ -1,4 +1,4 @@
-import 'package:aad_b2c_webview/src/aad_b2c_webview.dart';
+import 'package:aad_b2c_webview/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,6 +6,7 @@ class AADLoginButton extends StatefulWidget {
   final String userFlowUrl;
   final String clientId;
   final String redirectUrl;
+
   final Function(BuildContext context)? onRedirect;
   final BuildContext? context;
   final ValueChanged<String>? onAccessToken;
@@ -16,21 +17,23 @@ class AADLoginButton extends StatefulWidget {
   final TextStyle? style;
   final List<String> scopes;
   final String userFlowName;
+  final String responseType;
   const AADLoginButton({
     super.key,
     required this.userFlowUrl,
     required this.clientId,
     required this.redirectUrl,
-    this.onRedirect,
+    required this.scopes,
+    required this.userFlowName,
     required this.context,
+    this.responseType = Constants.defaultResponseType,
+    this.onRedirect,
     this.onAccessToken,
     this.onIDToken,
     this.onRefreshToken,
     this.useImage = true,
     this.title,
     this.style,
-    required this.scopes,
-    required this.userFlowName,
   })  : assert(userFlowUrl != ''),
         assert(userFlowName != ''),
         assert(clientId != ''),
@@ -49,7 +52,8 @@ class _AADLoginButtonState extends State<AADLoginButton> {
           MaterialPageRoute(
             builder: (context) {
               return ADB2CEmbedWebView(
-                userFlowUrl: widget.userFlowUrl,
+                responseType: widget.responseType,
+                tenantBaseUrl: widget.userFlowUrl,
                 userFlowName: widget.userFlowName,
                 clientId: widget.clientId,
                 redirectUrl: widget.redirectUrl,

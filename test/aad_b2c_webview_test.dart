@@ -12,7 +12,7 @@ void main() {
 
   test('testing embed webview', () {
     embedWebView = ADB2CEmbedWebView(
-      userFlowUrl: '',
+      tenantBaseUrl: '',
       userFlowName: '',
       clientId: '',
       redirectUrl: '',
