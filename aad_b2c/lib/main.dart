@@ -59,18 +59,35 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const aadB2CClientID = "<clientId>";
+    const aadB2CRedirectURL = "<azure_active_directory_url_redirect>";
+    const aadB2CUserFlowName = "B2C_<name_of_userflow>";
+    const aadB2CScopes = ['openid', 'offline_access'];
+    const aadB2CUserAuthFlow = "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
+
     return Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: AADLoginButton(
-            userFlowUrl:
-                '<https://<tenant_id>.b2clogin.com/<tenant_id>.onmicrosoft.com',
-            clientId: '<client-id>',
-            userFlowName: 'B2C_<Name_of_UserFlow>',
-            redirectUrl: '<redirect-url>',
+            userFlowUrl: aadB2CUserAuthFlow,
+            clientId: aadB2CClientID,
+            userFlowName: aadB2CUserFlowName,
+            redirectUrl: aadB2CRedirectURL,
             context: context,
-            scopes: const ['openId'],
+            scopes: aadB2CScopes,
+            onIDToken: (idToken) {
+
+            },
+            onAccessToken: (accessToken) {
+
+            },
+            onRefreshToken: (refreshToken) {
+
+            },
+            onRedirect: (context) => {
+
+            },
           ),
         ),
       ),
