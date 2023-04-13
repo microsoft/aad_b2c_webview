@@ -154,7 +154,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
             key: _key,
             debuggingEnabled: true,
             initialUrl: getUserFlowUrl(
-                userFlow: widget.tenantBaseUrl + Constants.userFlowUrlEnding),
+                userFlow:
+                    "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (String url) {
               setState(() {

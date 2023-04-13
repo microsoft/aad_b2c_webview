@@ -11,6 +11,7 @@ class Constants {
       'https://login.microsoftonline.com/tenant.onmicrosoft.com/oauth2/v2.0/token?p=';
   static const String defaultGrantType = "authorization_code";
   static const String defaultCodeChallengeCode = "S256";
-  static const String userFlowUrlEnding = "/oauth2/v2.0/authorize";
+  static const String userFlowUrlEnding = "oauth2/v2.0/authorize";
+  static const String userGetTokenUrlEnding = "oauth2/v2.0/token";
   static const defaultResponseType = "code";
 }

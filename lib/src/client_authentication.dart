@@ -40,7 +40,7 @@ class ClientAuthentication {
     String scopes = Constants.defaultScopes,
     String grantType = Constants.defaultGrantType,
   }) async {
-    var url = "$tenantBaseUrl$userFlowName/oauth2/v2.0/token";
+    var url = "$tenantBaseUrl/$userFlowName/${Constants.userGetTokenUrlEnding}";
     var response = await Dio().post(url,
         data: {
           'scope': scopes,
