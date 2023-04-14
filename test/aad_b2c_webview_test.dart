@@ -1,5 +1,4 @@
-import 'package:aad_b2c_webview/src/aad_b2c_webview.dart';
-import 'package:aad_b2c_webview/src/login_azure.dart';
+import 'package:aad_b2c_webview/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

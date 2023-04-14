@@ -1,5 +1,5 @@
 import 'package:aad_b2c_webview/src/constants.dart';
-import 'package:aad_b2c_webview/src/response_data.dart';
+import 'package:aad_b2c_webview/src/services/models/response_data.dart';
 import 'package:dio/dio.dart';
 import 'package:pkce/pkce.dart';
 

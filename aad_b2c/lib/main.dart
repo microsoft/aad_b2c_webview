@@ -1,4 +1,5 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
     const aadB2CScopes = ['openid', 'offline_access'];
     const aadB2CUserAuthFlow =
         "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
-    const aadB2TenantName = "<tenant-name>";
+    const aadB2TenantName = "nnoxxstaging";
 
     return Scaffold(
       body: Center(
@@ -90,21 +91,29 @@ class _LoginPageState extends State<LoginPage> {
                 context: context,
                 scopes: aadB2CScopes,
                 onAnyTokenRetrieved: (anyToken) {
-                  print(
-                      "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
+                  if (kDebugMode) {
+                    print(
+                        "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
+                  }
                 },
                 onIDToken: (token) {
                   jwtToken = token.value;
-                  print("Id Token: ${token.value}");
+                  if (kDebugMode) {
+                    print("Id Token: ${token.value}");
+                  }
                 },
                 onAccessToken: (token) {
-                  print("Access token: ${token.value}");
+                  if (kDebugMode) {
+                    print("Access token: ${token.value}");
+                  }
                 },
                 onRefreshToken: (token) {
                   refreshToken = token.value;
-                  print("Refresh token: ${token.value}");
-                  print(
-                      "Refresh token expiration time in seconds: ${token.expirationTime}");
+                  if (kDebugMode) {
+                    print("Refresh token: ${token.value}");
+                    print(
+                        "Refresh token expiration time in seconds: ${token.expirationTime}");
+                  }
                 },
                 onRedirect: (context) => {},
               ),

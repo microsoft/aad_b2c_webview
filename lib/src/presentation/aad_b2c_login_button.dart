@@ -1,5 +1,5 @@
+import 'package:aad_b2c_webview/src/services/models/token.dart';
 import 'package:aad_b2c_webview/src/src.dart';
-import 'package:aad_b2c_webview/src/token.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
