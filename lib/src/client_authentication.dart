@@ -13,7 +13,8 @@ class ClientAuthentication {
     required String policy,
     required String clientId,
   }) async {
-    var url = "https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/oauth2/v2.0/token";
+    var url =
+        "https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/${Constants.userGetTokenUrlEnding}";
     Response response = await Dio().post(
       url,
       data: {

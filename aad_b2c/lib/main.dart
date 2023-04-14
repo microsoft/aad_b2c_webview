@@ -54,8 +54,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String? jwtToken;
+  String? refreshToken;
 
   @override
   Widget build(BuildContext context) {
@@ -65,32 +73,55 @@ class LoginPage extends StatelessWidget {
     const aadB2CScopes = ['openid', 'offline_access'];
     const aadB2CUserAuthFlow =
         "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
+    const aadB2TenantName = "<tenant-name>";
 
     return Scaffold(
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: AADLoginButton(
-            userFlowUrl: aadB2CUserAuthFlow,
-            clientId: aadB2CClientID,
-            userFlowName: aadB2CUserFlowName,
-            redirectUrl: aadB2CRedirectURL,
-            context: context,
-            scopes: aadB2CScopes,
-            onAnyTokenRetrieved: (anyToken) {
-              print(
-                  "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
-            },
-            onIDToken: (idToken) {
-              print("Id Token: $idToken");
-            },
-            onAccessToken: (accessToken) {
-              print("Access token: $accessToken");
-            },
-            onRefreshToken: (refreshToken) {
-              print("Refresh token: $refreshToken");
-            },
-            onRedirect: (context) => {},
+          child: Column(
+            children: [
+              /// Login flow
+              AADLoginButton(
+                userFlowUrl: aadB2CUserAuthFlow,
+                clientId: aadB2CClientID,
+                userFlowName: aadB2CUserFlowName,
+                redirectUrl: aadB2CRedirectURL,
+                context: context,
+                scopes: aadB2CScopes,
+                onAnyTokenRetrieved: (anyToken) {
+                  print(
+                      "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
+                },
+                onIDToken: (token) {
+                  jwtToken = token.value;
+                  print("Id Token: ${token.value}");
+                },
+                onAccessToken: (token) {
+                  print("Access token: ${token.value}");
+                },
+                onRefreshToken: (token) {
+                  refreshToken = token.value;
+                  print("Refresh token: ${token.value}");
+                  print(
+                      "Refresh token expiration time in seconds: ${token.expirationTime}");
+                },
+                onRedirect: (context) => {},
+              ),
+
+              /// Refresh token
+              TextButton(
+                  onPressed: () {
+                    if (refreshToken != null) {
+                      ClientAuthentication.regenerateAccessToken(
+                          refreshToken: refreshToken!,
+                          tenant: aadB2TenantName,
+                          policy: aadB2CUserAuthFlow,
+                          clientId: aadB2CClientID);
+                    }
+                  },
+                  child: const Text("Refresh my token"))
+            ],
           ),
         ),
       ),
