@@ -17,5 +17,5 @@ class TokenResponseDataModel {
       : idToken = json[Constants.idToken],
         accessToken = json[Constants.accessToken],
         refreshToken = json[Constants.refreshToken],
-        refreshTokenExpireTime = json['refresh_token_expires_in'];
+        refreshTokenExpireTime = json[Constants.refreshTokenExpiresIn];
 }

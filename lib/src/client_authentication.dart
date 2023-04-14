@@ -7,30 +7,29 @@ class ClientAuthentication {
   final PkcePair pkcePair;
   ClientAuthentication({required this.pkcePair});
 
-  regenerateAccessToken() async {
-    // try {
-    //   var accessToken =
-    //       await SecureStorage.retrieveToken(Constants.accessToken);
-    //   bool accessTokenHasExpired = JwtDecoder.isExpired(accessToken!);
-    //   if (accessTokenHasExpired) {
-    //     var refreshToken =
-    //         await SecureStorage.retrieveToken(Constants.refreshToken);
-    //     var response = await Dio().post(
-    //       Constants.tokenUrl,
-    //       data: {
-    //         'grant_type': Constants.refreshToken,
-    //         'client_id': 'client_id',
-    //         'scope': Constants.scopes,
-    //         'refresh_token': refreshToken,
-    //       },
-    //     );
-    //     var newAccessToken = response.data[Constants.accessToken];
-    //     await SecureStorage.storeToken(Constants.accessToken, newAccessToken);
-    //   }
-    // } catch (e) {
-    //   logger.e(Constants.errorToken, e);
-    // }
-  }
+  // static Future<TokenResponseDataModel?> regenerateAccessToken({
+  //   required String refreshToken,
+  //   required String tenant,
+  //   required String policy,
+  //   required String clientId,
+  // }) async {
+  //   var url = "https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/oauth2/v2.0/token";
+  //   Response response = await Dio().post(
+  //     url,
+  //     data: {
+  //       'grant_type': Constants.refreshToken,
+  //       'scope': Constants.defaultScopes,
+  //       'client_id': clientId,
+  //       'refresh_token': refreshToken,
+  //     },
+  //     options: Options(contentType: Headers.formUrlEncodedContentType),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return TokenResponseDataModel.fromJson(response.data);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<TokenResponseDataModel?> getAllTokens({
     required String redirectUri,
