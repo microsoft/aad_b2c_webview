@@ -7,7 +7,8 @@ class ClientAuthentication {
   final PkcePair pkcePair;
   ClientAuthentication({required this.pkcePair});
 
-  static Future<TokenResponseDataModel?> regenerateAccessToken({
+  /// Refresh token: This method also returns a new refresh token [AzureTokenResponse]
+  static Future<AzureTokenResponse?> generateTokens({
     required String refreshToken,
     required String tenant,
     required String policy,
@@ -25,14 +26,15 @@ class ClientAuthentication {
       },
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
-    if (response.statusCode == 200) {
-      return TokenResponseDataModel.fromJson(response.data);
+    if (response.statusCode == 200 && response.data.toString().isNotEmpty) {
+      return AzureTokenResponse.fromJson(response.data);
     } else {
       return null;
     }
   }
 
-  Future<TokenResponseDataModel?> getAllTokens({
+  /// Get Access, Id and refresh token, check its response: [AzureTokenResponse]
+  Future<AzureTokenResponse?> getAllTokens({
     required String redirectUri,
     required String clientId,
     required String authCode,
@@ -55,7 +57,7 @@ class ClientAuthentication {
       options: Options(contentType: Headers.formUrlEncodedContentType),
     );
     if (response.statusCode == 200) {
-      return TokenResponseDataModel.fromJson(response.data);
+      return AzureTokenResponse.fromJson(response.data);
     } else {
       return null;
     }

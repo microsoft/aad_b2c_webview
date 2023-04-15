@@ -72,7 +72,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
   }
 
-  void handleTokenCallbacks({required TokenResponseDataModel? tokensData}) {
+  void handleTokenCallbacks({required AzureTokenResponse? tokensData}) {
     String? accessTokenValue = tokensData?.accessToken;
     String? idTokenValue = tokensData?.idToken;
     String? refreshTokenValue = tokensData?.refreshToken;
@@ -91,8 +91,10 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
 
     if (refreshTokenValue != null) {
-      final Token token =
-          Token(type: TokenType.refreshToken, value: refreshTokenValue);
+      final Token token = Token(
+          type: TokenType.refreshToken,
+          value: refreshTokenValue,
+          expirationTime: tokensData?.refreshTokenExpireTime);
       widget.onRefreshToken(token);
       onAnyTokenRecivedCallback(token);
     }
@@ -104,7 +106,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     ClientAuthentication clientAuthentication =
         ClientAuthentication(pkcePair: pkcePairInstance);
 
-    final TokenResponseDataModel? tokensData =
+    final AzureTokenResponse? tokensData =
         await clientAuthentication.getAllTokens(
       redirectUri: widget.redirectUrl,
       clientId: widget.clientId,
