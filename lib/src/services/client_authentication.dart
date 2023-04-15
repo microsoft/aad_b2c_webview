@@ -8,7 +8,7 @@ class ClientAuthentication {
   ClientAuthentication({required this.pkcePair});
 
   /// Refresh token: This method also returns a new refresh token [AzureTokenResponse]
-  static Future<AzureTokenResponse?> generateTokens({
+  static Future<AzureTokenResponse?> refreshTokens({
     required String refreshToken,
     required String tenant,
     required String policy,
