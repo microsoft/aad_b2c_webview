@@ -2,6 +2,7 @@ class Constants {
   static const String accessToken = "access_token";
   static const String idToken = "id_token";
   static const String refreshToken = "refresh_token";
+  static const String refreshTokenExpiresIn = "refresh_token_expires_in";
   static const String authCode = "code";
   static const String tokenUrl =
       'https://login.microsoftonline.com/tenant.onmicrosoft.com/oauth2/v2.0/token';

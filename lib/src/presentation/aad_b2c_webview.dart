@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:aad_b2c_webview/src/client_authentication.dart';
-import 'package:aad_b2c_webview/src/response_data.dart';
-import 'package:aad_b2c_webview/src/token.dart';
+import 'package:aad_b2c_webview/src/services/client_authentication.dart';
+import 'package:aad_b2c_webview/src/services/models/response_data.dart';
+import 'package:aad_b2c_webview/src/services/models/token.dart';
+
 import 'package:flutter/material.dart';
 import 'package:pkce/pkce.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../src/constants.dart';
+import '../constants.dart';
 
 class ADB2CEmbedWebView extends StatefulWidget {
   final String tenantBaseUrl;
@@ -71,7 +72,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
   }
 
-  void handleTokenCallbacks({required TokenResponseDataModel? tokensData}) {
+  void handleTokenCallbacks({required AzureTokenResponse? tokensData}) {
     String? accessTokenValue = tokensData?.accessToken;
     String? idTokenValue = tokensData?.idToken;
     String? refreshTokenValue = tokensData?.refreshToken;
@@ -90,8 +91,10 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
 
     if (refreshTokenValue != null) {
-      final Token token =
-          Token(type: TokenType.refreshToken, value: refreshTokenValue);
+      final Token token = Token(
+          type: TokenType.refreshToken,
+          value: refreshTokenValue,
+          expirationTime: tokensData?.refreshTokenExpireTime);
       widget.onRefreshToken(token);
       onAnyTokenRecivedCallback(token);
     }
@@ -103,7 +106,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     ClientAuthentication clientAuthentication =
         ClientAuthentication(pkcePair: pkcePairInstance);
 
-    final TokenResponseDataModel? tokensData =
+    final AzureTokenResponse? tokensData =
         await clientAuthentication.getAllTokens(
       redirectUri: widget.redirectUrl,
       clientId: widget.clientId,

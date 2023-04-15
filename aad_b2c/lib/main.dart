@@ -1,4 +1,5 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -54,8 +55,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String? jwtToken;
+  String? refreshToken;
 
   @override
   Widget build(BuildContext context) {
@@ -65,33 +74,71 @@ class LoginPage extends StatelessWidget {
     const aadB2CScopes = ['openid', 'offline_access'];
     const aadB2CUserAuthFlow =
         "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
+    const aadB2TenantName = "<tenant-name>";
 
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: AADLoginButton(
-            userFlowUrl: aadB2CUserAuthFlow,
-            clientId: aadB2CClientID,
-            userFlowName: aadB2CUserFlowName,
-            redirectUrl: aadB2CRedirectURL,
-            context: context,
-            scopes: aadB2CScopes,
-            onAnyTokenRetrieved: (anyToken) {
-              print(
-                  "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
-            },
-            onIDToken: (idToken) {
-              print("Id Token: $idToken");
-            },
-            onAccessToken: (accessToken) {
-              print("Access token: $accessToken");
-            },
-            onRefreshToken: (refreshToken) {
-              print("Refresh token: $refreshToken");
-            },
-            onRedirect: (context) => {},
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /// Login flow
+            AADLoginButton(
+              userFlowUrl: aadB2CUserAuthFlow,
+              clientId: aadB2CClientID,
+              userFlowName: aadB2CUserFlowName,
+              redirectUrl: aadB2CRedirectURL,
+              context: context,
+              scopes: aadB2CScopes,
+              onAnyTokenRetrieved: (anyToken) {
+                if (kDebugMode) {
+                  print(
+                      "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
+                }
+              },
+              onIDToken: (token) {
+                jwtToken = token.value;
+                if (kDebugMode) {
+                  print("Id Token: ${token.value}");
+                }
+              },
+              onAccessToken: (token) {
+                if (kDebugMode) {
+                  print("Access token: ${token.value}");
+                }
+              },
+              onRefreshToken: (token) {
+                refreshToken = token.value;
+                if (kDebugMode) {
+                  print("Refresh token: ${token.value}");
+                  print(
+                      "Refresh token expiration time in seconds: ${token.expirationTime}");
+                }
+              },
+              onRedirect: (context) => {},
+            ),
+
+            /// Refresh token
+            TextButton(
+              onPressed: () async {
+                if (refreshToken != null) {
+                  AzureTokenResponse? response =
+                      await ClientAuthentication.generateTokens(
+                    refreshToken: refreshToken!,
+                    tenant: aadB2TenantName,
+                    policy: aadB2CUserAuthFlow,
+                    clientId: aadB2CClientID,
+                  );
+                  if (response != null) {
+                    refreshToken = response.refreshToken;
+                    jwtToken = response.idToken;
+                  }
+                }
+              },
+              child: const Text("Refresh my token"),
+            )
+          ],
         ),
       ),
     );
