@@ -91,24 +91,24 @@ class _LoginPageState extends State<LoginPage> {
               redirectUrl: aadB2CRedirectURL,
               context: context,
               scopes: aadB2CScopes,
-              onAnyTokenRetrieved: (anyToken) {
+              onAnyTokenRetrieved: (Token anyToken) {
                 if (kDebugMode) {
                   print(
                       "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
                 }
               },
-              onIDToken: (token) {
+              onIDToken: (Token token) {
                 jwtToken = token.value;
                 if (kDebugMode) {
                   print("Id Token: ${token.value}");
                 }
               },
-              onAccessToken: (token) {
+              onAccessToken: (Token token) {
                 if (kDebugMode) {
                   print("Access token: ${token.value}");
                 }
               },
-              onRefreshToken: (token) {
+              onRefreshToken: (Token token) {
                 refreshToken = token.value;
                 if (kDebugMode) {
                   print("Refresh token: ${token.value}");
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 if (refreshToken != null) {
                   AzureTokenResponse? response =
-                      await ClientAuthentication.generateTokens(
+                      await ClientAuthentication.refreshTokens(
                     refreshToken: refreshToken!,
                     tenant: aadB2TenantName,
                     policy: aadB2CUserAuthFlow,
