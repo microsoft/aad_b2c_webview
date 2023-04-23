@@ -66,30 +66,13 @@ class _LoginPageState extends State<LoginPage> {
               redirectUrl: aadB2CRedirectURL,
               context: context,
               scopes: aadB2CScopes,
-              onAnyTokenRetrieved: (Token anyToken) {
-                if (kDebugMode) {
-                  print(
-                      "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
-                }
-              },
+              onAnyTokenRetrieved: (Token anyToken) {},
               onIDToken: (Token token) {
                 jwtToken = token.value;
-                if (kDebugMode) {
-                  print("Id Token: ${token.value}");
-                }
               },
-              onAccessToken: (Token token) {
-                if (kDebugMode) {
-                  print("Access token: ${token.value}");
-                }
-              },
+              onAccessToken: (Token token) {},
               onRefreshToken: (Token token) {
                 refreshToken = token.value;
-                if (kDebugMode) {
-                  print("Refresh token: ${token.value}");
-                  print(
-                      "Refresh token expiration time in seconds: ${token.expirationTime}");
-                }
               },
               onRedirect: (context) => {},
             ),
@@ -151,29 +134,10 @@ class MyLoginPage extends StatelessWidget {
         clientId: aadB2CClientID,
         redirectUrl: aadB2CRedirectURL,
         scopes: aadB2CScopes,
-        onAnyTokenRetrieved: (Token anyToken) {
-          if (kDebugMode) {
-            print(
-                "Any token of type: ${anyToken.type.name}: ${anyToken.value}");
-          }
-        },
-        onIDToken: (Token token) {
-          if (kDebugMode) {
-            print("Id Token: ${token.value}");
-          }
-        },
-        onAccessToken: (Token token) {
-          if (kDebugMode) {
-            print("Access token: ${token.value}");
-          }
-        },
-        onRefreshToken: (Token token) {
-          if (kDebugMode) {
-            print("Refresh token: ${token.value}");
-            print(
-                "Refresh token expiration time in seconds: ${token.expirationTime}");
-          }
-        },
+        onAnyTokenRetrieved: (Token anyToken) {},
+        onIDToken: (Token token) {},
+        onAccessToken: (Token token) {},
+        onRefreshToken: (Token token) {},
       ),
     );
   }
