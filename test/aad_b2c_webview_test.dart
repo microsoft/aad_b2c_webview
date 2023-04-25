@@ -1,5 +1,4 @@
-import 'package:aad_b2c_webview/src/aad_b2c_webview.dart';
-import 'package:aad_b2c_webview/src/login_azure.dart';
+import 'package:aad_b2c_webview/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -12,7 +11,10 @@ void main() {
 
   test('testing embed webview', () {
     embedWebView = ADB2CEmbedWebView(
-      userFlowUrl: '',
+      onAccessToken: (_) {},
+      onIDToken: (_) {},
+      onRefreshToken: (_) {},
+      tenantBaseUrl: '',
       userFlowName: '',
       clientId: '',
       redirectUrl: '',
@@ -30,6 +32,9 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AADLoginButton(
+          onAccessToken: (_) {},
+          onIDToken: (_) {},
+          onRefreshToken: (_) {},
           userFlowUrl: '',
           userFlowName: '',
           clientId: '',

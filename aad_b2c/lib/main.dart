@@ -1,4 +1,5 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -54,24 +55,73 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String? jwtToken;
+  String? refreshToken;
+
+  @override
   Widget build(BuildContext context) {
+    const aadB2CClientID = "<clientId>";
+    const aadB2CRedirectURL = "<azure_active_directory_url_redirect>";
+    const aadB2CUserFlowName = "B2C_<name_of_userflow>";
+    const aadB2CScopes = ['openid', 'offline_access'];
+    const aadB2CUserAuthFlow =
+        "https://<tenant-name>.b2clogin.com/<tenant-name>.onmicrosoft.com"; // https://login.microsoftonline.com/<azureTenantId>/oauth2/v2.0/token/
+    const aadB2TenantName = "<tenant-name>";
+
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: AADLoginButton(
-            userFlowUrl:
-                '<https://<tenant_id>.b2clogin.com/<tenant_id>.onmicrosoft.com/oauth2/v2.0/authorize>',
-            clientId: '<client-id>',
-            userFlowName: 'B2C_<Name_of_UserFlow>',
-            redirectUrl: '<redirect-url>',
-            context: context,
-            scopes: const ['openId'],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /// Login flow
+            AADLoginButton(
+              userFlowUrl: aadB2CUserAuthFlow,
+              clientId: aadB2CClientID,
+              userFlowName: aadB2CUserFlowName,
+              redirectUrl: aadB2CRedirectURL,
+              context: context,
+              scopes: aadB2CScopes,
+              onAnyTokenRetrieved: (Token anyToken) {},
+              onIDToken: (Token token) {
+                jwtToken = token.value;
+              },
+              onAccessToken: (Token token) {},
+              onRefreshToken: (Token token) {
+                refreshToken = token.value;
+              },
+              onRedirect: (context) => {},
+            ),
+
+            /// Refresh token
+            TextButton(
+              onPressed: () async {
+                if (refreshToken != null) {
+                  AzureTokenResponse? response =
+                      await ClientAuthentication.refreshTokens(
+                    refreshToken: refreshToken!,
+                    tenant: aadB2TenantName,
+                    policy: aadB2CUserAuthFlow,
+                    clientId: aadB2CClientID,
+                  );
+                  if (response != null) {
+                    refreshToken = response.refreshToken;
+                    jwtToken = response.idToken;
+                  }
+                }
+              },
+              child: const Text("Refresh my token"),
+            )
+          ],
         ),
       ),
     );

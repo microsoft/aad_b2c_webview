@@ -1,37 +1,45 @@
 import 'dart:io';
 
-import 'package:aad_b2c_webview/src/client_authentication.dart';
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:aad_b2c_webview/src/services/client_authentication.dart';
+import 'package:aad_b2c_webview/src/services/models/response_data.dart';
+import 'package:aad_b2c_webview/src/services/models/token.dart';
 
-import '../src/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:pkce/pkce.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import '../constants.dart';
 
 class ADB2CEmbedWebView extends StatefulWidget {
-  final String userFlowUrl;
+  final String tenantBaseUrl;
   final String clientId;
   final String redirectUrl;
   final String userFlowName;
   final Function(BuildContext context)? onRedirect;
-  final ValueChanged<String>? onAccessToken;
-  final ValueChanged<String>? onIDToken;
-  final ValueChanged<String>? onAuthToken;
-  final ValueChanged<String>? onRefreshToken;
+  final ValueChanged<Token> onAccessToken;
+  final ValueChanged<Token> onIDToken;
+  final ValueChanged<Token> onRefreshToken;
+  final ValueChanged<Token>? onAnyTokenRetrieved;
   final List<String> scopes;
-  final String? responseType;
+  final String responseType;
 
   const ADB2CEmbedWebView({
     super.key,
-    required this.userFlowUrl,
+    // Required to work
+    required this.tenantBaseUrl,
     required this.clientId,
     required this.redirectUrl,
-    this.onRedirect,
-    this.onAccessToken,
-    this.onIDToken,
-    this.onAuthToken,
-    this.onRefreshToken,
-    required this.scopes,
-    this.responseType,
     required this.userFlowName,
+    required this.scopes,
+    required this.onAccessToken,
+    required this.onIDToken,
+    required this.onRefreshToken,
+
+    // Optionals
+    this.onRedirect,
+    this.onAnyTokenRetrieved,
+
+    // Optionals with default value
+    this.responseType = Constants.defaultResponseType,
   });
 
   @override
@@ -39,72 +47,90 @@ class ADB2CEmbedWebView extends StatefulWidget {
 }
 
 class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
+  final PkcePair pkcePairInstance = PkcePair.generate();
+  final _key = UniqueKey();
+  late Function onRedirect;
+
   bool isLoading = true;
   bool showRedirect = false;
-  String userFlowUrl = '';
-  String redirectUrl = '';
-  String redirectRoute = '';
-  String clientId = '';
-  String userFlowName = '';
-  final _key = UniqueKey();
-  Function onRedirect = () {};
-  ValueChanged<String>? onAccessToken;
-  ValueChanged<String>? onIDToken;
-  ValueChanged<String>? onAuthToken;
-  ValueChanged<String>? onRefreshToken;
-  List<String> scopes = [];
-  String responseType = '';
 
   @override
   void initState() {
-    super.initState();
-    userFlowUrl = widget.userFlowUrl;
-    clientId = widget.clientId;
-    redirectUrl = widget.redirectUrl;
     onRedirect = widget.onRedirect ??
         () {
           Navigator.of(context).pop();
         };
-    onAccessToken = widget.onAccessToken;
-    onIDToken = widget.onIDToken;
-    onAuthToken = widget.onAuthToken;
-    onRefreshToken = widget.onRefreshToken;
-    scopes = widget.scopes;
-    responseType = widget.responseType ?? "id_token";
-    userFlowName = widget.userFlowName;
 
     //Enable virtual display.
     if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    super.initState();
+  }
+
+  void onAnyTokenRecivedCallback(Token token) {
+    if (widget.onAnyTokenRetrieved != null) {
+      widget.onAnyTokenRetrieved!(token);
+    }
+  }
+
+  void handleTokenCallbacks({required AzureTokenResponse? tokensData}) {
+    String? accessTokenValue = tokensData?.accessToken;
+    String? idTokenValue = tokensData?.idToken;
+    String? refreshTokenValue = tokensData?.refreshToken;
+
+    if (accessTokenValue != null) {
+      final Token token =
+          Token(type: TokenType.accessToken, value: accessTokenValue);
+      widget.onAccessToken(token);
+      onAnyTokenRecivedCallback(token);
+    }
+
+    if (idTokenValue != null) {
+      final token = Token(type: TokenType.idToken, value: idTokenValue);
+      widget.onIDToken(token);
+      onAnyTokenRecivedCallback(token);
+    }
+
+    if (refreshTokenValue != null) {
+      final Token token = Token(
+          type: TokenType.refreshToken,
+          value: refreshTokenValue,
+          expirationTime: tokensData?.refreshTokenExpireTime);
+      widget.onRefreshToken(token);
+      onAnyTokenRecivedCallback(token);
+    }
   }
 
   authorizationCodeFlow(url) async {
-    String authCode = url.split(Constants.authCode)[1];
-    ClientAuthentication clientAuthentication = ClientAuthentication();
-    final response = await clientAuthentication.getAllTokens(
-        redirectUrl, clientId, authCode);
-    if (response.statusCode == 200) {
-      onAccessToken!(response.data[Constants.accessToken]);
-      onIDToken!(response.data[Constants.idToken]);
-      onRefreshToken!(response.data[Constants.refreshToken]);
+    String authCode = url.split("${Constants.authCode}=")[1];
 
+    ClientAuthentication clientAuthentication =
+        ClientAuthentication(pkcePair: pkcePairInstance);
+
+    final AzureTokenResponse? tokensData =
+        await clientAuthentication.getAllTokens(
+      redirectUri: widget.redirectUrl,
+      clientId: widget.clientId,
+      authCode: authCode,
+      userFlowName: widget.userFlowName,
+      tenantBaseUrl: widget.tenantBaseUrl,
+    );
+
+    if (tokensData != null) {
       if (!mounted) return;
-      //call redirect function
+      // call redirect function
+      handleTokenCallbacks(tokensData: tokensData);
       onRedirect(context);
     }
   }
 
   onPageFinishedTasks(String url, Uri response) {
-    if (response.path.contains(redirectUrl)) {
+    if (response.path.contains(widget.redirectUrl)) {
       if (url.contains(Constants.idToken)) {
-        onIDToken!(url.split(Constants.idToken)[1]);
-
         //Navigate to the redirect route screen; check for mounted component
         if (!mounted) return;
         //call redirect function
         onRedirect(context);
       } else if (url.contains(Constants.accessToken)) {
-        onAccessToken!(url.split(Constants.accessToken)[1]);
-
         //Navigate to the redirect route screen; check for mounted component
         if (!mounted) return;
         //call redirect function
@@ -124,7 +150,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
           WebView(
             key: _key,
             debuggingEnabled: true,
-            initialUrl: getUserFlowUrl(userFlowUrl),
+            initialUrl: getUserFlowUrl(
+                userFlow:
+                    "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (String url) {
               setState(() {
@@ -162,7 +190,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     );
   }
 
-  String getUserFlowUrl(String userFlow) {
+  String getUserFlowUrl({required String userFlow}) {
     List<String>? userFlowSplit = userFlow.split('?');
     //Check if the user added the full user flow or just till 'authorize'
     if (userFlowSplit.length == 1) {
@@ -187,18 +215,23 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     const responseTypeParam = '&response_type=';
     const promptParam = '&prompt=login';
     const pageParam = '?p=';
+    const codeChallengeMethod =
+        '&code_challenge_method=${Constants.defaultCodeChallengeCode}';
+    final codeChallenge = "&code_challenge=${pkcePairInstance.codeChallenge}";
 
     return url +
         pageParam +
-        userFlowName +
+        widget.userFlowName +
         idClientParam +
-        clientId +
+        widget.clientId +
         nonceParam +
-        redirectUrl +
+        widget.redirectUrl +
         scopeParam +
-        createScopes(scopes) +
+        createScopes(widget.scopes) +
         responseTypeParam +
-        responseType +
-        promptParam;
+        widget.responseType +
+        promptParam +
+        codeChallenge +
+        codeChallengeMethod;
   }
 }
