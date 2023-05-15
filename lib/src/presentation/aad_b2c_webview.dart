@@ -21,6 +21,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final ValueChanged<Token>? onAnyTokenRetrieved;
   final List<String> scopes;
   final String responseType;
+  final List<String> optionalParameters;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -33,6 +34,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
     required this.onAccessToken,
     required this.onIDToken,
     required this.onRefreshToken,
+    required this.optionalParameters,
 
     // Optionals
     this.onRedirect,
@@ -219,6 +221,13 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         '&code_challenge_method=${Constants.defaultCodeChallengeCode}';
     final codeChallenge = "&code_challenge=${pkcePairInstance.codeChallenge}";
 
+    String newParameters = "";
+    if(widget.optionalParameters.isNotEmpty){
+      for (String param in widget.optionalParameters) {
+        newParameters += "&$param";
+      }
+    }
+
     return url +
         pageParam +
         widget.userFlowName +
@@ -232,6 +241,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         widget.responseType +
         promptParam +
         codeChallenge +
-        codeChallengeMethod;
+        codeChallengeMethod+
+        newParameters;
   }
 }

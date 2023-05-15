@@ -20,6 +20,7 @@ void main() {
       redirectUrl: '',
       onRedirect: (BuildContext context) {},
       scopes: const ['openId'],
+      optionalParameters: const [],
     );
     mockContext = MockBuildContext();
     var mockEmbedWebViewstate = embedWebView.createState().build(mockContext);
