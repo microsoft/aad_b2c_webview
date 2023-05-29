@@ -1,3 +1,4 @@
+import 'package:aad_b2c_webview/src/services/models/optional_param.dart';
 import 'package:aad_b2c_webview/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,7 +21,7 @@ void main() {
       redirectUrl: '',
       onRedirect: (BuildContext context) {},
       scopes: const ['openId'],
-      optionalParameters: const [],
+      optionalParameters: [OptionalParam(key: "key", value: "value")],
     );
     mockContext = MockBuildContext();
     var mockEmbedWebViewstate = embedWebView.createState().build(mockContext);
