@@ -1,14 +1,14 @@
 import 'dart:io';
-
 import 'package:aad_b2c_webview/src/services/client_authentication.dart';
+import 'package:aad_b2c_webview/src/services/models/optional_param.dart';
 import 'package:aad_b2c_webview/src/services/models/response_data.dart';
 import 'package:aad_b2c_webview/src/services/models/token.dart';
-
 import 'package:flutter/material.dart';
 import 'package:pkce/pkce.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../constants.dart';
 
+/// A widget that embeds the Azure AD B2C web view for authentication purposes.
 class ADB2CEmbedWebView extends StatefulWidget {
   final String tenantBaseUrl;
   final String clientId;
@@ -21,7 +21,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final ValueChanged<Token>? onAnyTokenRetrieved;
   final List<String> scopes;
   final String responseType;
-  final List<String> optionalParameters;
+  final List<OptionalParam> optionalParameters;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -68,12 +68,14 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     super.initState();
   }
 
+  /// Callback function for handling any token received.
   void onAnyTokenRecivedCallback(Token token) {
     if (widget.onAnyTokenRetrieved != null) {
       widget.onAnyTokenRetrieved!(token);
     }
   }
 
+  /// Handles the callbacks for the received tokens.
   void handleTokenCallbacks({required AzureTokenResponse? tokensData}) {
     String? accessTokenValue = tokensData?.accessToken;
     String? idTokenValue = tokensData?.idToken;
@@ -102,7 +104,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
   }
 
-  authorizationCodeFlow(url) async {
+  // Performs the authorization code flow using the provided URL.
+  Future<void> authorizationCodeFlow(url) async {
     String authCode = url.split("${Constants.authCode}=")[1];
 
     ClientAuthentication clientAuthentication =
@@ -125,7 +128,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     }
   }
 
-  onPageFinishedTasks(String url, Uri response) {
+  /// Executes tasks when the page finishes loading.
+  dynamic onPageFinishedTasks(String url, Uri response) {
     if (response.path.contains(widget.redirectUrl)) {
       if (url.contains(Constants.idToken)) {
         //Navigate to the redirect route screen; check for mounted component
@@ -153,8 +157,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
             key: _key,
             debuggingEnabled: true,
             initialUrl: getUserFlowUrl(
-                userFlow:
-                    "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
+                userFlow:"${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (String url) {
               setState(() {
@@ -166,8 +169,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
               onPageFinishedTasks(url, response);
             },
           ),
-          if (isLoading || showRedirect)
-            const Center(
+          Visibility(
+            visible: (isLoading || showRedirect),
+            child: const Center(
               child: SizedBox(
                 height: 250,
                 width: 250,
@@ -176,22 +180,22 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 ),
               ),
-            )
-          else
-            Stack(),
-          if (isLoading)
-            const Positioned(
+            ) 
+          ),
+          Visibility(
+            visible: isLoading,
+            child: const Positioned(
               child: Center(
                 child: Text('Redirecting to Secure Login...'),
               ),
-            )
-          else
-            Stack(),
+            ),
+          ),
         ],
       ),
     );
   }
 
+  /// Constructs the user flow URL with optional parameters.
   String getUserFlowUrl({required String userFlow}) {
     List<String>? userFlowSplit = userFlow.split('?');
     //Check if the user added the full user flow or just till 'authorize'
@@ -201,6 +205,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     return userFlow;
   }
 
+  /// Creates a string representation of the scopes.
   String createScopes(List<String> scopeList) {
     String allScope = '';
     for (String scope in scopeList) {
@@ -210,6 +215,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     return allScope.substring(0, allScope.length - 3);
   }
 
+  /// Concatenates the user flow URL with additional parameters.
   String concatUserFlow(String url) {
     const idClientParam = '&client_id=';
     const nonceParam = '&nonce=defaultNonce&redirect_uri=';
@@ -223,8 +229,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
 
     String newParameters = "";
     if(widget.optionalParameters.isNotEmpty){
-      for (String param in widget.optionalParameters) {
-        newParameters += "&$param";
+      for (OptionalParam param in widget.optionalParameters) {
+        newParameters += "&${param.key}=${param.value}";
       }
     }
 
