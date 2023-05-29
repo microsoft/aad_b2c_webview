@@ -1,3 +1,4 @@
+import 'package:aad_b2c_webview/src/services/models/optional_param.dart';
 import 'package:aad_b2c_webview/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,7 @@ class AADLoginButton extends StatefulWidget {
   final List<String> scopes;
   final String userFlowName;
   final String responseType;
-  final List<String>? optionalParameters;
+  final List<OptionalParam>? optionalParameters;
   const AADLoginButton({
     super.key,
     required this.userFlowUrl,
