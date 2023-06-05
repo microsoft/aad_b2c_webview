@@ -143,3 +143,21 @@ class MyLoginPage extends StatelessWidget {
   }
 }
 ```
+
+### Send Optional Parameters
+
+In the `AADLoginButton` widget, you have the flexibility to include optional parameters in order to customize the URL according to your specific requirements. The `optionalParameters` parameter allows you to pass a list of `OptionalParam` objects, where each object consists of a key and a value that represent the parameter name and its corresponding value, respectively.
+
+Here's an example of how you can utilize the `optionalParameters` parameter to add new parameters to the URL:
+```dart
+optionalParameters: [
+  OptionalParam(key: "parameter1", value: "value1"),
+  OptionalParam(key: "parameter2", value: "value2"),
+],
+```
+
+In the above example, we include two optional parameters: "parameter1" with the value "value1" and "parameter2" with the value "value2". You can include multiple `OptionalParam` objects within the list to incorporate multiple optional parameters in the URL.
+
+These optional parameters provide you with the ability to customize the behavior of the URL and conveniently transmit additional information as per your needs.
+
+Please adapt the example to suit your specific use case or requirements.
