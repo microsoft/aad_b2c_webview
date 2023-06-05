@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+##[0.0.46] - 2023-06-05
+Changes Made
+Added the ability to include optional parameters in the AADLoginButton widget to customize the URL. The optionalParameters parameter now accepts a list of OptionalParam objects, where each object represents a parameter name and its corresponding value.
+
+Updated the README.md file to include detailed instructions on how to utilize the optionalParameters parameter. An example was provided to demonstrate the addition of new parameters to the URL.
+
+Created a new class, OptionalParam, to encapsulate the key-value pairs for the optional parameters.
+
+Improved the concatUserFlow method to incorporate the optional parameters in the URL generation process.
+
+Updated the UI implementation to utilize the Visibility widget. This change allows for the removal of unnecessary Stack widgets, resulting in a cleaner and more efficient UI structure.
+
+These changes enhance the flexibility and customization options of the AADLoginButton widget, while also improving code organization, readability, and user experience.
+
+Thanks to @Baxi19 for his contributions to this release.
+
 ## [0.0.45] - 2023-04-26
 
 Added new model class that map responses from Azure: AzureTokenResponse
