@@ -4,14 +4,14 @@ version: 0.0.46
 repository: https://github.com/mohanajuhi166/aad-b2c-webview
 
 environment:
-  sdk: '>=2.18.4 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter:  ^3.0.4
-  google_fonts: ^4.0.3
+  webview_flutter:  ^4.0.0
+  google_fonts: ^5.0.0
   dio: ">=4.0.0 <6.0.0"
   pkce: ^1.1.0+1
   mockito: ^5.3.2
