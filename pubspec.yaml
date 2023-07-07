@@ -1,7 +1,7 @@
 name: aad_b2c_webview
 description: A simple Flutter package which embeds weview for accessing Azure AD B2C user flow endpoinr.
 version: 0.0.47
-repository: https://github.com/mohanajuhi166/aad-b2c-webview
+repository: https://github.com/microsoft/aad_b2c_webview
 
 environment:
   sdk: '>=2.19.0 <4.0.0'
