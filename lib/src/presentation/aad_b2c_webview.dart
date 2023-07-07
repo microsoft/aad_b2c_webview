@@ -116,6 +116,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
       redirectUri: widget.redirectUrl,
       clientId: widget.clientId,
       authCode: authCode,
+      providedScopes: (widget.scopes).isEmpty ? Constants.defaultScopes: createScopes(widget.scopes),
       userFlowName: widget.userFlowName,
       tenantBaseUrl: widget.tenantBaseUrl,
     );
