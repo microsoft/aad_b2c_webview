@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:aad_b2c_webview/src/constants.dart';
 import 'package:aad_b2c_webview/src/services/models/response_data.dart';
 import 'package:dio/dio.dart';
@@ -38,16 +40,16 @@ class ClientAuthentication {
     required String redirectUri,
     required String clientId,
     required String authCode,
+    required String providedScopes,
     required String userFlowName,
     required String tenantBaseUrl,
-    String scopes = Constants.defaultScopes,
     String grantType = Constants.defaultGrantType,
   }) async {
     var url = "$tenantBaseUrl/$userFlowName/${Constants.userGetTokenUrlEnding}";
     var response = await Dio().post(
       url,
       data: {
-        'scope': scopes,
+        'scope': providedScopes,
         'grant_type': grantType,
         'code': authCode,
         'client_id': clientId,
