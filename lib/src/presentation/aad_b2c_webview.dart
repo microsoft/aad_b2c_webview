@@ -1,4 +1,4 @@
-import 'dart:io';
+// ignore_for_file: depend_on_referenced_packages
 import 'package:aad_b2c_webview/src/services/client_authentication.dart';
 import 'package:aad_b2c_webview/src/services/models/optional_param.dart';
 import 'package:aad_b2c_webview/src/services/models/response_data.dart';
@@ -6,6 +6,7 @@ import 'package:aad_b2c_webview/src/services/models/token.dart';
 import 'package:flutter/material.dart';
 import 'package:pkce/pkce.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import '../constants.dart';
 
 /// A widget that embeds the Azure AD B2C web view for authentication purposes.
@@ -49,8 +50,9 @@ class ADB2CEmbedWebView extends StatefulWidget {
 }
 
 class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
-  final PkcePair pkcePairInstance = PkcePair.generate();
   final _key = UniqueKey();
+  final PkcePair pkcePairInstance = PkcePair.generate();
+  final WebViewController webViewController = WebViewController();
   late Function onRedirect;
 
   bool isLoading = true;
@@ -63,8 +65,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
           Navigator.of(context).pop();
         };
 
-    //Enable virtual display.
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    if (webViewController.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+    }
     super.initState();
   }
 
@@ -116,7 +119,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
       redirectUri: widget.redirectUrl,
       clientId: widget.clientId,
       authCode: authCode,
-      providedScopes: (widget.scopes).isEmpty ? Constants.defaultScopes: createScopes(widget.scopes),
+      providedScopes: (widget.scopes).isEmpty
+          ? Constants.defaultScopes
+          : createScopes(widget.scopes),
       userFlowName: widget.userFlowName,
       tenantBaseUrl: widget.tenantBaseUrl,
     );
@@ -154,35 +159,48 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          WebView(
+          WebViewWidget(
             key: _key,
-            debuggingEnabled: true,
-            initialUrl: getUserFlowUrl(
-                userFlow:"${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
-            javascriptMode: JavascriptMode.unrestricted,
-            onPageFinished: (String url) {
-              setState(() {
-                isLoading = false;
-              });
+            controller: webViewController
+              ..setJavaScriptMode(JavaScriptMode.unrestricted)
+              ..setBackgroundColor(const Color(0x00000000))
+              ..setNavigationDelegate(
+                NavigationDelegate(
+                  onProgress: (int progress) {
+                    // Update loading bar.
+                  },
+                  onPageStarted: (String url) {},
+                  onPageFinished: (String url) {
+                    setState(() {
+                      isLoading = false;
+                    });
 
-              final Uri response = Uri.dataFromString(url);
-              //Check that the user is past authentication and current URL is the redirect with the code.
-              onPageFinishedTasks(url, response);
-            },
-          ),
-          Visibility(
-            visible: (isLoading || showRedirect),
-            child: const Center(
-              child: SizedBox(
-                height: 250,
-                width: 250,
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    final Uri response = Uri.dataFromString(url);
+                    //Check that the user is past authentication and current URL is the redirect with the code.
+                    onPageFinishedTasks(url, response);
+                  },
+                ),
+              )
+              ..loadRequest(
+                Uri.parse(
+                  getUserFlowUrl(
+                      userFlow:
+                          "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
                 ),
               ),
-            ) 
           ),
+          Visibility(
+              visible: (isLoading || showRedirect),
+              child: const Center(
+                child: SizedBox(
+                  height: 250,
+                  width: 250,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                ),
+              )),
           Visibility(
             visible: isLoading,
             child: const Positioned(
@@ -229,7 +247,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     final codeChallenge = "&code_challenge=${pkcePairInstance.codeChallenge}";
 
     String newParameters = "";
-    if(widget.optionalParameters.isNotEmpty){
+    if (widget.optionalParameters.isNotEmpty) {
       for (OptionalParam param in widget.optionalParameters) {
         newParameters += "&${param.key}=${param.value}";
       }
@@ -248,7 +266,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         widget.responseType +
         promptParam +
         codeChallenge +
-        codeChallengeMethod+
+        codeChallengeMethod +
         newParameters;
   }
 }
