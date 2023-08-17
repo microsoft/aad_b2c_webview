@@ -64,9 +64,37 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         () {
           Navigator.of(context).pop();
         };
+    webViewController
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
 
+            final Uri response = Uri.dataFromString(url);
+            //Check that the user is past authentication and current URL is the redirect with the code.
+            onPageFinishedTasks(url, response);
+          },
+        ),
+      )
+      ..loadRequest(
+        Uri.parse(
+          getUserFlowUrl(
+            userFlow: "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}",
+          ),
+        ),
+      );
     if (webViewController.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
+      (webViewController.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
     }
     super.initState();
   }
@@ -161,34 +189,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         children: <Widget>[
           WebViewWidget(
             key: _key,
-            controller: webViewController
-              ..setJavaScriptMode(JavaScriptMode.unrestricted)
-              ..setBackgroundColor(const Color(0x00000000))
-              ..setNavigationDelegate(
-                NavigationDelegate(
-                  onProgress: (int progress) {
-                    // Update loading bar.
-                  },
-                  onPageStarted: (String url) {},
-                  onPageFinished: (String url) {
-                    setState(() {
-                      isLoading = false;
-                    });
-
-                    final Uri response = Uri.dataFromString(url);
-                    //Check that the user is past authentication and current URL is the redirect with the code.
-                    onPageFinishedTasks(url, response);
-                  },
-                ),
-              )
-              ..loadRequest(
-                Uri.parse(
-                  getUserFlowUrl(
-                      userFlow:
-                          "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
-                ),
-              ),
-          ),
+            controller: webViewController,
           Visibility(
               visible: (isLoading || showRedirect),
               child: const Center(
