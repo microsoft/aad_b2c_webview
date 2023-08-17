@@ -1,4 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
 import 'package:aad_b2c_webview/src/services/client_authentication.dart';
 import 'package:aad_b2c_webview/src/services/models/optional_param.dart';
 import 'package:aad_b2c_webview/src/services/models/response_data.dart';
@@ -52,7 +51,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
 class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   final _key = UniqueKey();
   final PkcePair pkcePairInstance = PkcePair.generate();
-  final WebViewController webViewController = WebViewController();
+  WebViewController? controller;
   late Function onRedirect;
 
   bool isLoading = true;
@@ -60,11 +59,12 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
 
   @override
   void initState() {
+    super.initState();
     onRedirect = widget.onRedirect ??
         () {
           Navigator.of(context).pop();
         };
-    webViewController
+    final webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
@@ -96,7 +96,14 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
       (webViewController.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
-    super.initState();
+
+    controller = webViewController;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller = null;
   }
 
   /// Callback function for handling any token received.
@@ -189,19 +196,21 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         children: <Widget>[
           WebViewWidget(
             key: _key,
-            controller: webViewController,
+            controller: controller!,
+          ),
           Visibility(
-              visible: (isLoading || showRedirect),
-              child: const Center(
-                child: SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  ),
+            visible: (isLoading || showRedirect),
+            child: const Center(
+              child: SizedBox(
+                height: 250,
+                width: 250,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 ),
-              )),
+              ),
+            ),
+          ),
           Visibility(
             visible: isLoading,
             child: const Positioned(

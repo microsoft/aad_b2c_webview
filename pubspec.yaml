@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   webview_flutter:  ^4.2.2
+  webview_flutter_android: ^3.9.3
+  webview_flutter_wkwebview: ^3.7.3
   google_fonts: ^5.0.0
   dio: ">=4.0.0 <6.0.0"
   pkce: ^1.1.0+1
