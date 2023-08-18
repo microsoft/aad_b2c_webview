@@ -23,7 +23,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final String responseType;
   final List<OptionalParam> optionalParameters;
   final Widget? loadingReplacement;
-  final Color? webViewBackgroundColor;
+  final Color webViewBackgroundColor;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -42,7 +42,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
     this.onRedirect,
     this.onAnyTokenRetrieved,
     this.loadingReplacement,
-    this.webViewBackgroundColor,
+    this.webViewBackgroundColor = const Color(0x00000000),
 
     // Optionals with default value
     this.responseType = Constants.defaultResponseType,
@@ -208,18 +208,16 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
           Visibility(
               visible:
                   loadingReplacement != null && (isLoading || showRedirect),
-              child: loadingReplacement ?? const SizedBox ()),
+              child: loadingReplacement ?? const SizedBox()),
           Visibility(
-              visible:
-                  loadingReplacement == null && (isLoading || showRedirect),
-              child: const Center(
-                child: SizedBox(
-                  height: 250,
-                  width: 250,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  ),
+            visible: loadingReplacement == null && (isLoading || showRedirect),
+            child: const Center(
+              child: SizedBox(
+                height: 250,
+                width: 250,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 ),
               ),
             ),
