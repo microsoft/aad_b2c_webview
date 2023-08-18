@@ -22,6 +22,8 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final List<String> scopes;
   final String responseType;
   final List<OptionalParam> optionalParameters;
+  final Widget? loadingReplacement;
+  final Color? webViewBackgroundColor;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -39,6 +41,8 @@ class ADB2CEmbedWebView extends StatefulWidget {
     // Optionals
     this.onRedirect,
     this.onAnyTokenRetrieved,
+    this.loadingReplacement,
+    this.webViewBackgroundColor,
 
     // Optionals with default value
     this.responseType = Constants.defaultResponseType,
@@ -53,6 +57,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   final PkcePair pkcePairInstance = PkcePair.generate();
   WebViewController? controller;
   late Function onRedirect;
+  Widget? loadingReplacement;
 
   bool isLoading = true;
   bool showRedirect = false;
@@ -64,9 +69,11 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
         () {
           Navigator.of(context).pop();
         };
+    loadingReplacement = widget.loadingReplacement;
+
     final webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      ..setBackgroundColor(widget.webViewBackgroundColor)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -199,20 +206,26 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
             controller: controller!,
           ),
           Visibility(
-            visible: (isLoading || showRedirect),
-            child: const Center(
-              child: SizedBox(
-                height: 250,
-                width: 250,
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              visible:
+                  loadingReplacement != null && (isLoading || showRedirect),
+              child: loadingReplacement ?? const SizedBox ()),
+          Visibility(
+              visible:
+                  loadingReplacement == null && (isLoading || showRedirect),
+              child: const Center(
+                child: SizedBox(
+                  height: 250,
+                  width: 250,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
                 ),
               ),
             ),
           ),
           Visibility(
-            visible: isLoading,
+            visible: loadingReplacement == null && isLoading,
             child: const Positioned(
               child: Center(
                 child: Text('Redirecting to Secure Login...'),
