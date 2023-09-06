@@ -247,12 +247,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
 
   /// Creates a string representation of the scopes.
   String createScopes(List<String> scopeList) {
-    String allScope = '';
-    for (String scope in scopeList) {
-      scope += '%20';
-      allScope += scope;
-    }
-    return allScope.substring(0, allScope.length - 3);
+    return scopeList.join(' ');
   }
 
   /// Concatenates the user flow URL with additional parameters.
