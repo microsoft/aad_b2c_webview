@@ -15,6 +15,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final String redirectUrl;
   final String userFlowName;
   final Function(BuildContext context)? onRedirect;
+  final Function(BuildContext context)? onErrorOrCancel;
   final ValueChanged<Token> onAccessToken;
   final ValueChanged<Token> onIDToken;
   final ValueChanged<Token> onRefreshToken;
@@ -40,6 +41,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
 
     // Optionals
     this.onRedirect,
+    this.onErrorOrCancel,
     this.onAnyTokenRetrieved,
     this.loadingReplacement,
     this.webViewBackgroundColor = const Color(0x00000000),
@@ -57,6 +59,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   final PkcePair pkcePairInstance = PkcePair.generate();
   WebViewController? controller;
   late Function onRedirect;
+  late Function onErrorOrCancel;
   Widget? loadingReplacement;
 
   bool isLoading = true;
@@ -67,6 +70,10 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     super.initState();
     onRedirect = widget.onRedirect ??
         () {
+          Navigator.of(context).pop();
+        };
+    onErrorOrCancel = widget.onErrorOrCancel ??
+            () {
           Navigator.of(context).pop();
         };
     loadingReplacement = widget.loadingReplacement;
@@ -192,6 +199,9 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
       } else if (url.contains(Constants.authCode)) {
         //Run authorization code flow and get access token.
         authorizationCodeFlow(url);
+      } else {
+        // Assume login cancelled or something else went wrong
+        onErrorOrCancel(context);
       }
     }
   }
