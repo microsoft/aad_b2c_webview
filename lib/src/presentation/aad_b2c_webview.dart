@@ -58,8 +58,8 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   final _key = UniqueKey();
   final PkcePair pkcePairInstance = PkcePair.generate();
   WebViewController? controller;
-  late Function onRedirect;
-  late Function onErrorOrCancel;
+  late Function(BuildContext context) onRedirect;
+  late Function(BuildContext context) onErrorOrCancel;
   Widget? loadingReplacement;
 
   bool isLoading = true;
@@ -69,11 +69,11 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   void initState() {
     super.initState();
     onRedirect = widget.onRedirect ??
-        () {
+        (context) {
           Navigator.of(context).pop();
         };
     onErrorOrCancel = widget.onErrorOrCancel ??
-            () {
+        (context) {
           Navigator.of(context).pop();
         };
     loadingReplacement = widget.loadingReplacement;
