@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.56] - 2024-02-27
+This changes the dependency from Dio to Dart's http packages for requests and adds user-agent field for sign-in purposes.
+
+## [0.0.55] - 2024-02-16
+This adds a new functionality, for onRedirect and onErrorOrCancel and adds a context argument.
+
 ## [0.0.54] - 2023-11-14
 This adds a new functionality, onErrorOrCancel which is called when the redirect URL is hit with no tokens provided.
 
