@@ -25,6 +25,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final List<OptionalParam> optionalParameters;
   final Widget? loadingReplacement;
   final Color webViewBackgroundColor;
+  final String? userAgent;
 
   const ADB2CEmbedWebView({
     super.key,
@@ -45,6 +46,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
     this.onAnyTokenRetrieved,
     this.loadingReplacement,
     this.webViewBackgroundColor = const Color(0x00000000),
+    this.userAgent,
 
     // Optionals with default value
     this.responseType = Constants.defaultResponseType,
@@ -81,6 +83,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     final webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(widget.webViewBackgroundColor)
+      ..setUserAgent(widget.userAgent)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
