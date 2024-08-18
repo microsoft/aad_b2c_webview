@@ -20,6 +20,8 @@ class AADLoginButton extends StatefulWidget {
   final String userFlowName;
   final String responseType;
   final List<OptionalParam>? optionalParameters;
+  final Widget? loadingReplacement;
+
   const AADLoginButton({
     super.key,
     required this.userFlowUrl,
@@ -38,6 +40,7 @@ class AADLoginButton extends StatefulWidget {
     this.title,
     this.style,
     this.optionalParameters,
+    this.loadingReplacement,
   })  : assert(userFlowUrl != ''),
         assert(userFlowName != ''),
         assert(clientId != ''),
@@ -78,6 +81,7 @@ class _AADLoginButtonState extends State<AADLoginButton> {
                 },
                 scopes: widget.scopes,
                 optionalParameters: widget.optionalParameters ?? [],
+                loadingReplacement: widget.loadingReplacement,
               );
             },
           ),
