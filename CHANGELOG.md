@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.57] - 2024-08-21
+UI/UX improvements on token retrieval page by exposing the loadingReplacement widget for AADLoginButton. 
+
 ## [0.0.56] - 2024-02-27
 This changes the dependency from Dio to Dart's http packages for requests and adds user-agent field for sign-in purposes.
 
