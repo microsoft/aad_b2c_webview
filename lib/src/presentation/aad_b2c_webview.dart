@@ -91,6 +91,12 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
           },
           onPageStarted: (String url) {},
           onUrlChange: (change) {
+            if (change.url!.contains(widget.redirectUrl)) {
+              setState(() {
+                isLoading = true;
+              });
+            }
+
             final Uri response = Uri.dataFromString(change.url!);
             onPageFinishedTasks(change.url!, response);
           },

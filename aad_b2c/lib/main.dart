@@ -1,5 +1,4 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -99,7 +98,28 @@ class _LoginPageState extends State<LoginPage> {
               onRefreshToken: (Token token) {
                 refreshToken = token.value;
               },
-              onRedirect: (context) => {},
+              onRedirect: (context) => {
+                Navigator.of(context).pop(),
+              },
+              loadingReplacement: Builder(builder: (context) {
+                return Positioned.fill(
+                  child: Container(
+                    color: Colors.white,
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16),
+                            child: Text('Loading...'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
             ),
 
             /// Refresh token
