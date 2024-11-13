@@ -14,6 +14,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
   final String clientId;
   final String redirectUrl;
   final String userFlowName;
+  final String promptType;
   final Function(BuildContext context)? onRedirect;
   final Function(BuildContext context)? onErrorOrCancel;
   final ValueChanged<Token> onAccessToken;
@@ -41,6 +42,7 @@ class ADB2CEmbedWebView extends StatefulWidget {
     required this.optionalParameters,
 
     // Optionals
+    this.promptType = Constants.promptTypeLogin,
     this.onRedirect,
     this.onErrorOrCancel,
     this.onAnyTokenRetrieved,
@@ -70,57 +72,54 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
   @override
   void initState() {
     super.initState();
-    onRedirect = widget.onRedirect ??
-        (context) {
-          Navigator.of(context).pop();
-        };
-    onErrorOrCancel = widget.onErrorOrCancel ??
-        (context) {
-          Navigator.of(context).pop();
-        };
+
+    // Set the default redirect and error/cancel actions.
+    onRedirect = widget.onRedirect ?? (context) => Navigator.of(context).pop();
+    onErrorOrCancel =
+        widget.onErrorOrCancel ?? (context) => Navigator.of(context).pop();
     loadingReplacement = widget.loadingReplacement;
 
-    final webViewController = WebViewController()
+    initializeWebViewController();
+  }
+
+  /// Initialize the WebViewController and set its properties.
+  void initializeWebViewController() {
+    controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(widget.webViewBackgroundColor)
       ..setUserAgent(widget.userAgent)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            // Update loading bar.
+            // Update loading bar if needed.
           },
           onPageStarted: (String url) {},
           onUrlChange: (change) {
             if (change.url!.contains(widget.redirectUrl)) {
-              setState(() {
-                isLoading = true;
-              });
+              setState(() => isLoading = true);
             }
-
             final Uri response = Uri.dataFromString(change.url!);
             onPageFinishedTasks(change.url!, response);
           },
           onPageFinished: (String url) {
-            setState(() {
-              isLoading = false;
-            });
+            setState(() => isLoading = false);
           },
         ),
       )
       ..loadRequest(
         Uri.parse(
           getUserFlowUrl(
-            userFlow: "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}",
-          ),
+              userFlow:
+                  "${widget.tenantBaseUrl}/${Constants.userFlowUrlEnding}"),
         ),
       );
-    if (webViewController.platform is AndroidWebViewController) {
+
+    // Enable debugging for Android.
+    if (controller!.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
-      (webViewController.platform as AndroidWebViewController)
+      (controller!.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
-
-    controller = webViewController;
   }
 
   @override
@@ -275,7 +274,7 @@ class ADB2CEmbedWebViewState extends State<ADB2CEmbedWebView> {
     const nonceParam = '&nonce=defaultNonce&redirect_uri=';
     const scopeParam = '&scope=';
     const responseTypeParam = '&response_type=';
-    const promptParam = '&prompt=login';
+    String promptParam = '&prompt=${widget.promptType}';
     const pageParam = '?p=';
     const codeChallengeMethod =
         '&code_challenge_method=${Constants.defaultCodeChallengeCode}';

@@ -15,4 +15,8 @@ class Constants {
   static const String userFlowUrlEnding = "oauth2/v2.0/authorize";
   static const String userGetTokenUrlEnding = "oauth2/v2.0/token";
   static const defaultResponseType = "code";
+
+  static const String promptTypeLogin = "login";
+  static const String promptTypeNone = "none";
+  static const String promptTypeConsent = "consent";
 }
