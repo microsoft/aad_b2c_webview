@@ -83,19 +83,19 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             /// Login flow
-            AADLoginButton(
+            ADLoginButton(
               userFlowUrl: aadB2CUserAuthFlow,
               clientId: aadB2CClientID,
               userFlowName: aadB2CUserFlowName,
               redirectUrl: aadB2CRedirectURL,
               context: context,
               scopes: aadB2CScopes,
-              onAnyTokenRetrieved: (Token anyToken) {},
-              onIDToken: (Token token) {
+              onAnyTokenRetrieved: (TokenEntity anyToken) {},
+              onIDToken: (TokenEntity token) {
                 jwtToken = token.value;
               },
-              onAccessToken: (Token token) {},
-              onRefreshToken: (Token token) {
+              onAccessToken: (TokenEntity token) {},
+              onRefreshToken: (TokenEntity token) {
                 refreshToken = token.value;
               },
               onRedirect: (context) => {
@@ -126,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () async {
                 if (refreshToken != null) {
-                  AzureTokenResponse? response =
+                  AzureTokenResponseEntity? response =
                       await ClientAuthentication.refreshTokens(
                     refreshToken: refreshToken!,
                     tenant: aadB2TenantName,

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0] - 2025-01-02
+- Bugs fixed
+- Added Webview Interaction
+- Added Flutter UI Customization
+- Added Dynamic Flutter Layout
+- Added new Code Structure
+- Updated Login Button 
+- Updated README.md
+- Updated CHANGELOG.md
+- Updated pubspec.yaml
+
 ## [0.0.57] - 2024-08-21
 UI/UX improvements on token retrieval page by exposing the loadingReplacement widget for AADLoginButton. 
 
