@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/microsoft/aad_b2c_webview/blob/main/readme/microsoft-azure-logo.png" width="100%/">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/microsoft-azure-logo.png" width="50%/">
 </p>
 
 Azure AD B2C Embedded Webview
@@ -27,6 +27,7 @@ dependencies:
 ```
 
 ## 🛠️ Usage
+
 #### Parameters
 It is recommended to use env to save the keys securely
 ```
@@ -39,11 +40,11 @@ const aadB2CUserAuthFlow = "https://$aadB2CTenantName.b2clogin.com/$aadB2CTenant
 ```
 
 #### Where to find?
-* [aadB2CClientID](https://github.com/microsoft/aad_b2c_webview/blob/main/readme/info-params.jpeg)
-* [aadB2CTenantName](https://github.com/microsoft/aad_b2c_webview/blob/main/readme/info-params.jpeg)
-* [aadB2CUserFlowName](https://github.com/microsoft/aad_b2c_webview/blob/main/readme/aadB2CUserFlowName.jpeg)
-* [aadB2CRedirectURL](https://github.com/microsoft/aad_b2c_webview/blob/main/readme/aadB2CRedirectURL.jpeg)
-* [aadB2CScopes](https://github.com/microsoft/aad_b2c_webview/blob/main/readme/aadB2CScopes.jpeg)
+* [aadB2CClientID](https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/info-params.jpeg)
+* [aadB2CTenantName](https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/info-params.jpeg)
+* [aadB2CUserFlowName](https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/aadB2CUserFlowName.jpeg)
+* [aadB2CRedirectURL](https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/aadB2CRedirectURL.jpeg)
+* [aadB2CScopes](https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/aadB2CScopes.jpeg)
 
 #### Configure parameters in the code
 
@@ -78,6 +79,10 @@ These optional parameters provide you with the ability to customize the behavior
 ### Login Button
 To add the easy to use sign in with microsoft button simply use the ADB2CBase.button widget
 and a beautiful sign in button appears as shown below.
+
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/buttom.gif" width=50% hspace="10"/>
+</p>
 
 
 #### Configuration
@@ -163,6 +168,10 @@ class B2CWithButton extends StatelessWidget {
 
 ### Webview Interaction
 Custom build sign in button to call web view page
+
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/webview.gif" width=50% hspace="10"/>
+</p>
 
 #### Example
 ```dart
@@ -272,7 +281,21 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
 ## Flutter UI Customization
 Get all the power of Flutter/Dart to customize the layout of Azure authentication screens
 
-Examples:
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/customizations.gif" width=50% hspace="10"/>
+</p>
+
+#### Sign In
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/full-sign-in.gif" width=50% hspace="10"/>
+</p>
+
+#### Sign Up & Sign In & MFA
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/full-auth.gif" width=50% hspace="10"/>
+</p>
+
+#### Full Examples
 * [Simple Customization](https://github.com/microsoft/aad_b2c_webview/blob/main/example/lib/b2c_with_simple_customization.dart)
 * [Multiple Customization](https://github.com/microsoft/aad_b2c_webview/blob/main/example/lib/b2c_with_multiple_customizations.dart)
 
@@ -280,6 +303,11 @@ Examples:
 ## Dynamic Flutter Layout
 Convert layout to flutter automatically
 
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/dynamic.gif" width=50% hspace="10"/>
+</p>
+
+#### Example
 ```dart
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 import 'package:example/core/commons.dart';
@@ -433,6 +461,12 @@ class _B2CWithDynamicCustomizationState
 ## Refresh Token
 Use the code below to refresh the token
 
+
+<p align="center">
+  <img src="https://github.com/gabrielpatricksouza/aad_b2c_webview/blob/aad_b2c_v2/readme/gifs/refresh.gif" width=50% hspace="10"/>
+</p>
+
+#### Example
 ```dart
 await controller.refreshToken(
   B2CAuthEntity(
