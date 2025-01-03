@@ -10,7 +10,8 @@ void main() {
 
   setUp(() {
     mockB2CWebViewRepository = MockB2CWebViewRepository();
-    actionController = ActionController(b2cWebViewRepository: mockB2CWebViewRepository);
+    actionController =
+        ActionController(b2cWebViewRepository: mockB2CWebViewRepository);
   });
 
   group('ActionController', () {
@@ -34,9 +35,8 @@ void main() {
       // Verify that runJavaScript was called with the correct JavaScript code
       verify(() => mockB2CWebViewRepository.runJavaScript(
           "document.getElementById('input1').value = 'test value 1';"
-              "document.getElementById('input2').value = 'test value 2';"
-              "document.getElementById('submitButton').click();"))
-          .called(1);
+          "document.getElementById('input2').value = 'test value 2';"
+          "document.getElementById('submitButton').click();")).called(1);
     });
 
     test('should handle empty listIdValue in insertAndClick', () async {
@@ -52,8 +52,7 @@ void main() {
 
       // Verify that runJavaScript was called with only the click code
       verify(() => mockB2CWebViewRepository.runJavaScript(
-          "document.getElementById('submitButton').click();"))
-          .called(1);
+          "document.getElementById('submitButton').click();")).called(1);
     });
 
     test('should sync the page correctly', () async {
@@ -65,10 +64,10 @@ void main() {
       await actionController.syncPage();
 
       // Verify that runJavaScript was called with the necessary code
-      verify(() => mockB2CWebViewRepository.runJavaScript(FlutterJs.jsFunctionToGetAlert))
-          .called(1);
-      verify(() => mockB2CWebViewRepository.runJavaScript(FlutterJs.jsFunctionToGetComponents))
-          .called(1);
+      verify(() => mockB2CWebViewRepository
+          .runJavaScript(FlutterJs.jsFunctionToGetAlert)).called(1);
+      verify(() => mockB2CWebViewRepository
+          .runJavaScript(FlutterJs.jsFunctionToGetComponents)).called(1);
     });
 
     test('should call getCustomAlerts correctly', () async {
@@ -85,8 +84,7 @@ void main() {
 
       // Verify that runJavaScript was called with the correct custom alert JS function
       verify(() => mockB2CWebViewRepository.runJavaScript(
-          FlutterJs.jsFunctionToGetCustomAlert(params: customAlert)))
-          .called(1);
+          FlutterJs.jsFunctionToGetCustomAlert(params: customAlert))).called(1);
     });
 
     test('should throw exception when insertAndClick fails', () async {
@@ -101,7 +99,7 @@ void main() {
           .thenThrow(Exception('JavaScript execution error'));
 
       expect(
-            () async => await actionController.insertAndClick(
+        () async => await actionController.insertAndClick(
           listIdValue: listIdValue,
           buttonId: buttonId,
         ),
@@ -115,7 +113,7 @@ void main() {
           .thenThrow(Exception('JavaScript execution error'));
 
       expect(
-            () async => await actionController.syncPage(),
+        () async => await actionController.syncPage(),
         throwsA(isA<Exception>()),
       );
     });

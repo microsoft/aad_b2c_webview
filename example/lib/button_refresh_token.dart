@@ -71,7 +71,7 @@ class _ButtonRefreshTokenState extends State<ButtonRefreshToken>
                     Clipboard.setData(
                       ClipboardData(
                         text: 'access:${response?.accessToken}\n\n'
-                            'iDToken:${response?.idToken}\n\n'
+                            'idToken:${response?.idToken}\n\n'
                             'refreshToken:${response?.refreshToken}',
                       ),
                     );

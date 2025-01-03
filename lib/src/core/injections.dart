@@ -57,8 +57,8 @@ class Injections {
           datasource: getIt<B2CAuthDatasource>(),
         ),
       )
-      ..registerLazySingleton<ADB2CController>(
-        () => ADB2CController(
+      ..registerLazySingleton<AADB2CController>(
+        () => AADB2CController(
           b2cAuthRepository: getIt<B2CAuthRepository>(),
           b2cWebViewRepository: getIt<B2CWebViewRepository>(),
           webviewController: getIt<WebViewControllersHelper>(),

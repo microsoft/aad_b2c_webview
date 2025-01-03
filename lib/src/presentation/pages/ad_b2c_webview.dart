@@ -19,7 +19,6 @@ class ADLoginWebView extends StatefulWidget {
 
 class _ADLoginWebViewState extends State<ADLoginWebView>
     with MixinControllerAccess {
-
   @override
   void initState() {
     _initWebview();
@@ -46,10 +45,10 @@ class _ADLoginWebViewState extends State<ADLoginWebView>
 
   _onSuccess({
     required TokenEntity accessToken,
-    required TokenEntity iDToken,
+    required TokenEntity idToken,
     required TokenEntity refreshToken,
   }) {
-    widget.settings?.onSuccess(context, accessToken, iDToken, refreshToken);
+    widget.settings?.onSuccess(context, accessToken, idToken, refreshToken);
   }
 
   _onError(String message) {

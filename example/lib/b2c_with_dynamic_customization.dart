@@ -19,7 +19,7 @@ class _B2CWithDynamicCustomizationState
     return Scaffold(
       appBar: AppBar(),
       body: Scaffold(
-        body: ADB2CBase.custom(
+        body: AADB2CBase.custom(
           params: widget.params,
           settings: CustomSettingsEntity(
             onError: (BuildContext context, String? error) {
@@ -30,7 +30,7 @@ class _B2CWithDynamicCustomizationState
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-            onSuccess: (context, accessToken, iDToken, refreshToken) async {
+            onSuccess: (context, accessToken, idToken, refreshToken) async {
               setState(() => _isLoading = false);
               var snackBar = const SnackBar(
                 content: Text('Successfully Authenticated!'),

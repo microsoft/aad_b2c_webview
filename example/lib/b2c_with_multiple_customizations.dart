@@ -29,7 +29,7 @@ class _B2CWithMultipleCustomizationsState
     return Scaffold(
       appBar: AppBar(),
       body: Scaffold(
-        body: ADB2CBase.custom(
+        body: AADB2CBase.custom(
           params: widget.params,
           settings: CustomSettingsEntity(
             onError: _onError,
@@ -68,7 +68,7 @@ class _B2CWithMultipleCustomizationsState
   _onSuccess(
     BuildContext context,
     accessToken,
-    iDToken,
+    idToken,
     refreshToken,
   ) {
     var snackBar = const SnackBar(
@@ -81,7 +81,7 @@ class _B2CWithMultipleCustomizationsState
       MaterialPageRoute(
         builder: (context) => SuccessRedirect(
           accessToken: accessToken,
-          idToken: iDToken,
+          idToken: idToken,
           refreshToken: refreshToken,
         ),
       ),

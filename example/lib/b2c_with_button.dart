@@ -23,7 +23,7 @@ class B2CWithButton extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16.0),
-              ADB2CBase.button(
+              AADB2CBase.button(
                 params: params,
                 settings: ButtonSettingsEntity(
                   onError: _onError,
@@ -38,11 +38,11 @@ class B2CWithButton extends StatelessWidget {
   }
 
   _onSuccess(
-      BuildContext context,
-      accessToken,
-      iDToken,
-      refreshToken,
-      ) {
+    BuildContext context,
+    accessToken,
+    idToken,
+    refreshToken,
+  ) {
     var snackBar = const SnackBar(
       content: Text('Successfully Authenticated!'),
       backgroundColor: Colors.green,

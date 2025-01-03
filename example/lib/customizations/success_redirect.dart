@@ -93,7 +93,7 @@ class _SuccessRedirectState extends State<SuccessRedirect>
     Clipboard.setData(
       ClipboardData(
         text: 'access:${widget.accessToken?.value}\n\n'
-            'iDToken:${widget.idToken?.value}\n\n'
+            'idToken:${widget.idToken?.value}\n\n'
             'refreshToken:${widget.refreshToken?.value}',
       ),
     );
@@ -105,7 +105,7 @@ class _SuccessRedirectState extends State<SuccessRedirect>
       Clipboard.setData(
         ClipboardData(
           text: 'access:${response?.accessToken}\n\n'
-              'iDToken:${response?.idToken}\n\n'
+              'idToken:${response?.idToken}\n\n'
               'refreshToken:${response?.refreshToken}',
         ),
       );

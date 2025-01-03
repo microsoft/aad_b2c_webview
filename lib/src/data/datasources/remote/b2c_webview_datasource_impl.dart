@@ -70,7 +70,7 @@ class B2CWebViewDatasourceImpl implements B2CWebViewDatasource {
               if (params.onHtmlUrlChange != null) {
                 params.onHtmlUrlChange!(url);
               }
-              if(Check.isLink(url)) {
+              if (Check.isLink(url)) {
                 await _pollUntilPageLoaded(params);
               }
             },
@@ -87,7 +87,6 @@ class B2CWebViewDatasourceImpl implements B2CWebViewDatasource {
       rethrow;
     }
   }
-
 
   @override
   Future<void> initializeWeb(B2CWebViewParams params) async {}

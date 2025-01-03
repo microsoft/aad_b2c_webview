@@ -30,12 +30,11 @@ class ActionController {
     try {
       await getCustomAlerts([
         FlutterJsCustomAlert(
-          type: JsDocumentType.byClassName,
-          code: '.verificationErrorText.error',
-          conditions: {
-            'aria-hidden': 'false',
-          }
-        )
+            type: JsDocumentType.byClassName,
+            code: '.verificationErrorText.error',
+            conditions: {
+              'aria-hidden': 'false',
+            })
       ]);
       await runJavaScript(FlutterJs.jsFunctionToGetAlert);
       await runJavaScript(FlutterJs.jsFunctionToGetComponents);

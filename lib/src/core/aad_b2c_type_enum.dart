@@ -1,4 +1,4 @@
-enum ADB2CType {
+enum AADB2CType {
   button,
   custom,
   webview;

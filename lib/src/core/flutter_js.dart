@@ -1,3 +1,5 @@
+import 'package:aad_b2c_webview/aad_b2c_webview.dart';
+
 enum JsDocumentType { byClassName, querySelector, elementById }
 
 class FlutterJsCustomAlert {
@@ -18,9 +20,9 @@ class FlutterJs {
   static String get jsFlutterComponentChannel => 'html_components';
 
   static String get jsFunctionCheckComponentsOnScreen => '''
-      (document.querySelector('input') !== null || 
-       document.querySelector('button') !== null || 
-       document.querySelector('a') !== null)
+      (document.querySelector('${HtmlParseType.input.name}') !== null || 
+       document.querySelector('${HtmlParseType.button.name}') !== null || 
+       document.querySelector('${HtmlParseType.a.name}') !== null)
     ''';
 
   static String get jsFunctionToGetAlert => jsFunctionToGetCustomAlert(
@@ -44,7 +46,7 @@ class FlutterJs {
 
     // Function to extract input, button, and link elements
     function extractInputsButtonsAndLinks() {
-      const elements = document.querySelectorAll('input, button, a');
+      const elements = document.querySelectorAll('${HtmlParseType.input.name}, ${HtmlParseType.button.name}, ${HtmlParseType.a.name}');
       const extractedElements = [];
 
       elements.forEach(element => {
@@ -157,6 +159,6 @@ class FlutterJs {
         });
       })();
     ''';
-      }
+    }
   }
 }

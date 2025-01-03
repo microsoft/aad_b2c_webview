@@ -29,7 +29,7 @@ class _B2CWithSimpleCustomizationState
     return Scaffold(
       appBar: AppBar(),
       body: Scaffold(
-        body: ADB2CBase.custom(
+        body: AADB2CBase.custom(
           params: widget.params,
           settings: CustomSettingsEntity(
             onError: _onError,
@@ -149,13 +149,13 @@ class _B2CWithSimpleCustomizationState
   void _onSuccess(
     BuildContext context,
     accessToken,
-    iDToken,
+    idToken,
     refreshToken,
   ) {
     Clipboard.setData(
       ClipboardData(
         text: 'access:${accessToken.value}\n'
-            'iDToken:${iDToken.value}\n'
+            'idToken:${idToken.value}\n'
             'refreshToken:${refreshToken.value}',
       ),
     );

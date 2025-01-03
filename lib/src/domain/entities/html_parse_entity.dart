@@ -18,21 +18,19 @@ class HtmlParseEntity {
     required this.additionalAttributes,
   });
 
-  String getAttribute(String key){
-    try{
+  String getAttribute(String key) {
+    try {
       return additionalAttributes[key] ?? '';
-    }
-    catch (error, trace){
+    } catch (error, trace) {
       debugPrint('Error: $error\nTrace:$trace');
       return '';
     }
   }
 
-  bool containsAttribute(String key){
-    try{
+  bool containsAttribute(String key) {
+    try {
       return additionalAttributes.containsKey(key);
-    }
-    catch (error, trace){
+    } catch (error, trace) {
       debugPrint('Error: $error\nTrace:$trace');
       return false;
     }

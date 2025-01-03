@@ -4,6 +4,7 @@ import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 
 // Mock classes for dependencies
 class MockB2CWebViewDatasource extends Mock implements B2CWebViewDatasource {}
+
 class MockB2CWebViewHelper extends Mock implements B2CWebViewHelper {}
 
 void main() {
@@ -41,24 +42,27 @@ void main() {
 
       // Act & Assert
       expect(
-            () async => await repository.initialize(params),
+        () async => await repository.initialize(params),
         throwsA(isA<ConfigWebViewException>()),
       );
     });
 
-    test('runJavaScript should throw RunJavaScriptException on error', () async {
+    test('runJavaScript should throw RunJavaScriptException on error',
+        () async {
       // Arrange
       const code = 'console.log("Hello")';
-      when(() => mockDatasource.runJavaScript(code)).thenThrow(Exception('JavaScript error'));
+      when(() => mockDatasource.runJavaScript(code))
+          .thenThrow(Exception('JavaScript error'));
 
       // Act & Assert
       expect(
-            () async => await repository.runJavaScript(code),
+        () async => await repository.runJavaScript(code),
         throwsA(isA<RunJavaScriptException>()),
       );
     });
 
-    test('runJavaScriptReturningResult should return result successfully', () async {
+    test('runJavaScriptReturningResult should return result successfully',
+        () async {
       // Arrange
       const code = 'return 42';
       when(() => mockDatasource.runJavaScriptReturningResult(code))
@@ -72,7 +76,9 @@ void main() {
       expect(result, 42);
     });
 
-    test('runJavaScriptReturningResult should throw RunJavaScriptException on error', () async {
+    test(
+        'runJavaScriptReturningResult should throw RunJavaScriptException on error',
+        () async {
       // Arrange
       const code = 'return 42';
       when(() => mockDatasource.runJavaScriptReturningResult(code))
@@ -80,7 +86,7 @@ void main() {
 
       // Act & Assert
       expect(
-            () async => await repository.runJavaScriptReturningResult(code),
+        () async => await repository.runJavaScriptReturningResult(code),
         throwsA(isA<RunJavaScriptException>()),
       );
     });

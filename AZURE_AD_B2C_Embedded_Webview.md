@@ -241,7 +241,7 @@ Widget build(BuildContext context) {
       // When navigating to the "/" route, build the Create Account widget.
 
       '/': (context) =>
-      const ADB2CEmbedWebView(
+      const AADB2CEmbedWebView(
         url: '<user_flow_endpoint>',
         clientId: '<client_id_of_user_flow>',
         redirectUrl: '<redirect_uri_of_user_flow>',
@@ -252,7 +252,7 @@ Widget build(BuildContext context) {
   );
 }
 ```
-## Parameters Used In ADB2CEmbedWebView
+## Parameters Used In AADB2CEmbedWebView
 
 * url: This is the user flow/policy endpoint
 

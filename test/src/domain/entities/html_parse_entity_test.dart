@@ -38,7 +38,8 @@ void main() {
       expect(attributeValue, 'value1');
     });
 
-    test('getAttribute should return empty string for non-existing attribute', () {
+    test('getAttribute should return empty string for non-existing attribute',
+        () {
       final attributeValue = htmlParseEntity.getAttribute('nonExistent');
       expect(attributeValue, '');
     });
@@ -48,7 +49,8 @@ void main() {
       expect(contains, true);
     });
 
-    test('containsAttribute should return false for non-existing attribute', () {
+    test('containsAttribute should return false for non-existing attribute',
+        () {
       final contains = htmlParseEntity.containsAttribute('nonExistent');
       expect(contains, false);
     });

@@ -77,7 +77,7 @@ In the above example, we include two optional parameters: "parameter1" with the 
 These optional parameters provide you with the ability to customize the behavior of the URL and conveniently transmit additional information as per your needs.
 
 ### Login Button
-To add the easy to use sign in with microsoft button simply use the ADB2CBase.button widget
+To add the easy to use sign in with microsoft button simply use the AADB2CBase.button widget
 and a beautiful sign in button appears as shown below.
 
 <p align="center">
@@ -128,7 +128,7 @@ class B2CWithButton extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16.0),
-              ADB2CBase.button(
+              AADB2CBase.button(
                 params: params,
                 settings: ButtonSettingsEntity(
                   onError: _onError,
@@ -145,7 +145,7 @@ class B2CWithButton extends StatelessWidget {
   _onSuccess(
       BuildContext context,
       accessToken,
-      iDToken,
+      idToken,
       refreshToken,
       ) {
     var snackBar = const SnackBar(
@@ -216,7 +216,7 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.6,
                 width: MediaQuery.sizeOf(context).width,
-                child: ADB2CBase.webview(
+                child: AADB2CBase.webview(
                   params: widget.params,
                   settings: WebViewSettingsEntity(
                     onError: _onError,
@@ -256,7 +256,7 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
   _onSuccess(
     BuildContext context,
     accessToken,
-    iDToken,
+    idToken,
     refreshToken,
   ) {
     var snackBar = const SnackBar(
@@ -330,7 +330,7 @@ class _B2CWithDynamicCustomizationState
     return Scaffold(
       appBar: AppBar(),
       body: Scaffold(
-        body: ADB2CBase.custom(
+        body: AADB2CBase.custom(
           params: widget.params,
           settings: CustomSettingsEntity(
             onError: (BuildContext context, String? error) {
@@ -341,7 +341,7 @@ class _B2CWithDynamicCustomizationState
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-            onSuccess: (context, accessToken, iDToken, refreshToken) async {
+            onSuccess: (context, accessToken, idToken, refreshToken) async {
               setState(() => _isLoading = false);
               var snackBar = const SnackBar(
                 content: Text('Successfully Authenticated!'),

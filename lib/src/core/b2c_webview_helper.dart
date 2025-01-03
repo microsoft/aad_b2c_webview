@@ -94,7 +94,8 @@ class B2CWebViewHelper {
     B2CWebViewParams params,
     String codeFlow,
   ) async {
-    final AzureTokenResponseEntity? tokensData = await _b2cAuthRepository.getAllTokens(
+    final AzureTokenResponseEntity? tokensData =
+        await _b2cAuthRepository.getAllTokens(
       B2CAuthEntity(
         redirectUri: params.redirectUrl.encodeComponent(),
         clientId: params.clientId,
@@ -139,12 +140,11 @@ class B2CWebViewHelper {
       if (params.onAllTokensRetrieved != null) {
         params.onAllTokensRetrieved!(
           accessToken: accessToken,
-          iDToken: idToken,
+          idToken: idToken,
           refreshToken: refreshToken,
         );
       }
-    }
-    else if(params.onHtmlErrorInfo != null){
+    } else if (params.onHtmlErrorInfo != null) {
       params.onHtmlErrorInfo!('Get Tokens Failed');
     }
   }

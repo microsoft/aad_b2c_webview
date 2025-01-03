@@ -5,7 +5,7 @@ class B2CAuthRepositoryImpl implements B2CAuthRepository {
 
   B2CAuthRepositoryImpl({
     required B2CAuthDatasource datasource,
-  })  : _datasource = datasource;
+  }) : _datasource = datasource;
 
   @override
   Future<AzureTokenResponseEntity?> refreshTokens(B2CAuthEntity params) async {

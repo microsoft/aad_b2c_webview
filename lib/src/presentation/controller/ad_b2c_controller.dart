@@ -1,11 +1,11 @@
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 
-class ADB2CController with MixinControllerAccess {
+class AADB2CController with MixinControllerAccess {
   final B2CAuthRepository _b2cAuthRepository;
   final B2CWebViewRepository _b2cWebViewRepository;
   final WebViewControllersHelper _webviewController;
 
-  ADB2CController({
+  AADB2CController({
     required B2CAuthRepository b2cAuthRepository,
     required B2CWebViewRepository b2cWebViewRepository,
     required WebViewControllersHelper webviewController,

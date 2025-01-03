@@ -8,7 +8,7 @@ class OptionalParam {
   /// The value of the optional parameter.
   final String value;
 
-  /// Creates a new instance of [OptionalParam] 
+  /// Creates a new instance of [OptionalParam]
   /// with the given [key] and [value].
   OptionalParam({
     required this.key,

@@ -109,10 +109,10 @@ class _ADLoginButtonState extends State<ADLoginButton>
 
   _onSuccess({
     required TokenEntity accessToken,
-    required TokenEntity iDToken,
+    required TokenEntity idToken,
     required TokenEntity refreshToken,
   }) {
-    widget.settings?.onSuccess(context, accessToken, iDToken, refreshToken);
+    widget.settings?.onSuccess(context, accessToken, idToken, refreshToken);
   }
 
   _onError(String message) {
@@ -124,7 +124,6 @@ class _ADLoginButtonState extends State<ADLoginButton>
       children: [
         if (_isLoading)
           widget.params.loadingReplacement ?? const DefaultLoading(),
-
         WebViewWidget(
           controller: controller.uiDependency.mobile,
         ),

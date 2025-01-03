@@ -2,21 +2,22 @@ import 'dart:convert';
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 import 'package:flutter/material.dart';
 
-class ADB2CCustom extends StatefulWidget {
+class AADB2CCustom extends StatefulWidget {
   final B2CWebViewParams params;
   final CustomSettingsEntity? settings;
 
-  const ADB2CCustom({
+  const AADB2CCustom({
     super.key,
     required this.params,
     required this.settings,
   }) : assert(settings != null);
 
   @override
-  State<ADB2CCustom> createState() => _ADB2CCustomState();
+  State<AADB2CCustom> createState() => _AADB2CCustomState();
 }
 
-class _ADB2CCustomState extends State<ADB2CCustom> with MixinControllerAccess {
+class _AADB2CCustomState extends State<AADB2CCustom>
+    with MixinControllerAccess {
   bool _isLoading = true;
   String? _errorMessage;
   String? _currentUrl;
@@ -45,7 +46,7 @@ class _ADB2CCustomState extends State<ADB2CCustom> with MixinControllerAccess {
             actionController,
             _formFields,
           ) ??
-          const DefaultError();
+          DefaultError(message: _errorMessage);
     }
 
     return DefaultError(message: _errorMessage);
@@ -83,18 +84,20 @@ class _ADB2CCustomState extends State<ADB2CCustom> with MixinControllerAccess {
 
   void _onSuccess({
     required TokenEntity accessToken,
-    required TokenEntity iDToken,
+    required TokenEntity idToken,
     required TokenEntity refreshToken,
   }) async {
-    widget.settings?.onSuccess(context, accessToken, iDToken, refreshToken);
-    setState(() => _isLoading = false);
+    widget.settings?.onSuccess(context, accessToken, idToken, refreshToken);
+    if (mounted) setState(() => _isLoading = false);
   }
 
   void _onError(String message) {
-    setState(() {
-      _errorMessage = message;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _errorMessage = message;
+        _isLoading = false;
+      });
+    }
     widget.settings?.onError(context, message);
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:aad_b2c_webview/aad_b2c_webview.dart';
 
 abstract interface class B2CAuthRepository {

@@ -39,7 +39,7 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.6,
                 width: MediaQuery.sizeOf(context).width,
-                child: ADB2CBase.webview(
+                child: AADB2CBase.webview(
                   params: widget.params,
                   settings: WebViewSettingsEntity(
                     onError: _onError,
@@ -47,7 +47,8 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
                     controllerBuilder: (
                       BuildContext context,
                       ActionController action,
-                    ) => _controller = action,
+                    ) =>
+                        _controller = action,
                   ),
                 ),
               ),
@@ -79,7 +80,7 @@ class _B2CWithWebViewState extends State<B2CWithWebView> {
   _onSuccess(
     BuildContext context,
     accessToken,
-    iDToken,
+    idToken,
     refreshToken,
   ) {
     var snackBar = const SnackBar(

@@ -21,7 +21,6 @@ class B2CAuthEntity {
     this.grantType = Constants.defaultGrantType,
   });
 
-
   B2CAuthEntity copyWith({
     String? refreshToken,
     String? clientId,

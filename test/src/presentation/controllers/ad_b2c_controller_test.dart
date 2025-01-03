@@ -7,10 +7,11 @@ class MockB2CAuthRepository extends Mock implements B2CAuthRepository {}
 
 class MockB2CWebViewRepository extends Mock implements B2CWebViewRepository {}
 
-class MockWebViewControllersHelper extends Mock implements WebViewControllersHelper {}
+class MockWebViewControllersHelper extends Mock
+    implements WebViewControllersHelper {}
 
 void main() {
-  late ADB2CController adb2CController;
+  late AADB2CController adb2CController;
   late MockB2CAuthRepository mockB2CAuthRepository;
   late MockB2CWebViewRepository mockB2CWebViewRepository;
   late MockWebViewControllersHelper mockWebViewControllersHelper;
@@ -19,16 +20,23 @@ void main() {
     mockB2CAuthRepository = MockB2CAuthRepository();
     mockB2CWebViewRepository = MockB2CWebViewRepository();
     mockWebViewControllersHelper = MockWebViewControllersHelper();
-    adb2CController = ADB2CController(
+    adb2CController = AADB2CController(
       b2cAuthRepository: mockB2CAuthRepository,
       b2cWebViewRepository: mockB2CWebViewRepository,
       webviewController: mockWebViewControllersHelper,
     );
   });
 
-  group('ADB2CController', () {
+  group('AADB2CController', () {
     test('should initialize webview correctly', () async {
-      final params = B2CWebViewParams(tenantBaseUrl: 'https://example.com', clientId: 'clientId', redirectUrl: 'https://redirect.com', userFlowName: 'userFlow', scopes: ['scope'], isLoginFlow: true, containsChallenge: true);
+      final params = B2CWebViewParams(
+          tenantBaseUrl: 'https://example.com',
+          clientId: 'clientId',
+          redirectUrl: 'https://redirect.com',
+          userFlowName: 'userFlow',
+          scopes: ['scope'],
+          isLoginFlow: true,
+          containsChallenge: true);
 
       when(() => mockB2CWebViewRepository.initialize(params))
           .thenAnswer((_) async => true);
@@ -39,13 +47,20 @@ void main() {
     });
 
     test('should remove JavaScript channels when reinitializing', () async {
-      final params = B2CWebViewParams(tenantBaseUrl: 'https://example.com', clientId: 'clientId', redirectUrl: 'https://redirect.com', userFlowName: 'userFlow', scopes: ['scope'], isLoginFlow: true, containsChallenge: true);
+      final params = B2CWebViewParams(
+          tenantBaseUrl: 'https://example.com',
+          clientId: 'clientId',
+          redirectUrl: 'https://redirect.com',
+          userFlowName: 'userFlow',
+          scopes: ['scope'],
+          isLoginFlow: true,
+          containsChallenge: true);
 
       when(() => mockB2CWebViewRepository.initialize(params))
           .thenAnswer((_) async => true);
 
-      when(() => mockWebViewControllersHelper.mobile.removeJavaScriptChannel(any()))
-          .thenAnswer((_) async {});
+      when(() => mockWebViewControllersHelper.mobile
+          .removeJavaScriptChannel(any())).thenAnswer((_) async {});
 
       await adb2CController.initWebView(params);
 
@@ -85,7 +100,7 @@ void main() {
           .thenThrow(Exception('Token refresh failed'));
 
       expect(
-            () async => await adb2CController.refreshToken(authEntity),
+        () async => await adb2CController.refreshToken(authEntity),
         throwsA(isA<Exception>()),
       );
     });

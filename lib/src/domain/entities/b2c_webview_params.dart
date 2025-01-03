@@ -18,7 +18,7 @@ class B2CWebViewParams {
   final int? timeOutInMillis;
   final Function({
     required TokenEntity accessToken,
-    required TokenEntity iDToken,
+    required TokenEntity idToken,
     required TokenEntity refreshToken,
   })? onAllTokensRetrieved;
   final VoidCallback? onRedirect;
@@ -63,7 +63,7 @@ class B2CWebViewParams {
     ValueChanged<String>? onHtmlUrlChange,
     final Function({
       required TokenEntity accessToken,
-      required TokenEntity iDToken,
+      required TokenEntity idToken,
       required TokenEntity refreshToken,
     })? onAllTokensRetrieved,
   }) {

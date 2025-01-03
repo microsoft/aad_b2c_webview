@@ -110,10 +110,13 @@ void main() {
       expect(copiedEntity.userFlowName, testUserFlowName);
       expect(copiedEntity.tenantBaseUrl, testTenantBaseUrl);
       expect(copiedEntity.refreshToken, testRefreshToken);
-      expect(copiedEntity.grantType, Constants.defaultGrantType); // Default value
+      expect(
+          copiedEntity.grantType, Constants.defaultGrantType); // Default value
     });
 
-    test('should return default values for missing optional parameters in copyWith', () {
+    test(
+        'should return default values for missing optional parameters in copyWith',
+        () {
       // Arrange
       final originalEntity = B2CAuthEntity(
         redirectUri: testRedirectUri,
@@ -131,7 +134,8 @@ void main() {
       expect(copiedEntity.userFlowName, isNull); // Default value (null)
       expect(copiedEntity.tenantBaseUrl, isNull); // Default value (null)
       expect(copiedEntity.refreshToken, isNull); // Default value (null)
-      expect(copiedEntity.grantType, Constants.defaultGrantType); // Default value
+      expect(
+          copiedEntity.grantType, Constants.defaultGrantType); // Default value
     });
   });
 }

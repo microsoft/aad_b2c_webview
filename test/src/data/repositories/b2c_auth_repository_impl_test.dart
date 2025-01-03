@@ -55,7 +55,7 @@ void main() {
 
       // Act & Assert
       expect(
-            () => repository.refreshTokens(params),
+        () => repository.refreshTokens(params),
         throwsA(isA<B2CAuthRefreshException>()),
       );
     });
@@ -87,7 +87,7 @@ void main() {
 
       // Act & Assert
       expect(
-            () => repository.getAllTokens(params),
+        () => repository.getAllTokens(params),
         throwsA(isA<B2CAuthGetTokensException>()),
       );
     });
