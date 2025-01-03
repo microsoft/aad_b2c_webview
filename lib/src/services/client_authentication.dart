@@ -17,13 +17,14 @@ class ClientAuthentication {
     required String tenant,
     required String policy,
     required String clientId,
+    String? providedScopes = Constants.defaultScopes,
   }) async {
     final uri = Uri.parse(
         "https://$tenant.b2clogin.com/$tenant.onmicrosoft.com/$policy/${Constants.userGetTokenUrlEnding}");
 
     final response = await http.post(uri, body: {
       'grant_type': Constants.refreshToken,
-      'scope': Constants.defaultScopes,
+      'scope': providedScopes,
       'client_id': clientId,
       'refresh_token': refreshToken,
     }, headers: {
