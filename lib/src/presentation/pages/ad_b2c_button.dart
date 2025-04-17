@@ -20,7 +20,7 @@ class ADLoginButton extends StatefulWidget {
 
 class _ADLoginButtonState extends State<ADLoginButton>
     with MixinControllerAccess {
-  bool _isLoading = true;
+  final ValueNotifier<bool> _isLoading = ValueNotifier(true);
 
   @override
   void initState() {
@@ -96,16 +96,19 @@ class _ADLoginButtonState extends State<ADLoginButton>
   Future<void> _initButton() async {
     final newParams = widget.params.copyWith(
       onHtmlComponents: _onLoadComponents,
-      onHtmlUrlChange: _onChangeUrl,
+      onPageStarted: _onPageStarted,
       onHtmlErrorInfo: _onError,
       onAllTokensRetrieved: _onSuccess,
     );
     await controller.initWebView(newParams);
   }
 
-  _onChangeUrl(_) => setState(() => _isLoading = true);
+  _onPageStarted(_) => setState(() => _isLoading.value = true);
 
-  _onLoadComponents(_) => setState(() => _isLoading = false);
+  _onLoadComponents((String? url, String data) result) {
+    final bool? keepLoading = widget.settings?.onKeepLoading(result.$1);
+    setState(() => _isLoading.value = keepLoading ?? false);
+  }
 
   _onSuccess({
     required TokenEntity accessToken,
@@ -120,15 +123,19 @@ class _ADLoginButtonState extends State<ADLoginButton>
   }
 
   Widget _buildMobile() {
-    return Stack(
-      children: [
-        if (_isLoading)
-          widget.params.loadingReplacement ?? const DefaultLoading(),
-        WebViewWidget(
-          controller: controller.uiDependency.mobile,
-        ),
-      ],
-    );
+    return ValueListenableBuilder(
+        valueListenable: _isLoading,
+        builder: (_, isLoading, __) {
+          return Stack(
+            children: [
+              WebViewWidget(
+                controller: controller.uiDependency.mobile,
+              ),
+              if (isLoading)
+                widget.params.loadingReplacement ?? const DefaultLoading(),
+            ],
+          );
+        });
   }
 
   /// It will be developed in the next version

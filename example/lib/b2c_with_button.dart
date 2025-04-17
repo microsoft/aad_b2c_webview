@@ -28,6 +28,7 @@ class B2CWithButton extends StatelessWidget {
                 settings: ButtonSettingsEntity(
                   onError: _onError,
                   onSuccess: _onSuccess,
+                  onKeepLoading: _onKeepLoading,
                 ),
               ),
             ],
@@ -57,4 +58,7 @@ class B2CWithButton extends StatelessWidget {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+  bool _onKeepLoading(String? url) =>
+      url?.startsWith(params.redirectUrl) ?? false;
 }

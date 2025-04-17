@@ -62,7 +62,8 @@ class _AADB2CCustomState extends State<AADB2CCustom>
     await controller.initWebView(newParams);
   }
 
-  void _onLoadComponents(String json) {
+  void _onLoadComponents((String? url, String data) result) {
+    String json = result.$2;
     List<dynamic> jsonList = jsonDecode(json);
     List<HtmlParseEntity> formFields =
         jsonList.map((json) => HtmlParseEntity.fromJson(json)).toList();
