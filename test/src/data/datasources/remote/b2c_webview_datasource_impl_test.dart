@@ -36,13 +36,14 @@ void main() {
           expect(error, 'Error occurred');
         },
         onHtmlComponents: (components) {
-          expect(components, 'Component details');
+          expect(components.$1, 'url');
+          expect(components.$2, 'Component details');
         },
       );
 
       // Simulate a callback call
       params.onHtmlErrorInfo?.call('Error occurred');
-      params.onHtmlComponents?.call('Component details');
+      params.onHtmlComponents?.call(('url', 'Component details'));
     });
 
     test('should copyWith correctly', () {

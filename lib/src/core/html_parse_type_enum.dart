@@ -4,10 +4,10 @@ enum HtmlParseType {
   a,
   none;
 
-  String get name => switch(this){
-    HtmlParseType.input => 'input',
-    HtmlParseType.button => 'button',
-    HtmlParseType.a => 'a',
-    HtmlParseType.none => 'none',
-  };
+  String get name => switch (this) {
+        HtmlParseType.input => 'input',
+        HtmlParseType.button => 'button',
+        HtmlParseType.a => 'a',
+        HtmlParseType.none => 'none',
+      };
 }

@@ -27,8 +27,9 @@ class B2CWebViewParams {
   final ValueChanged<TokenEntity>? onRefreshToken;
   final List<OptionalParam>? optionalParameters;
   final ValueChanged<String>? onHtmlErrorInfo;
-  final ValueChanged<String>? onHtmlComponents;
+  final ValueChanged<(String? url, String data)>? onHtmlComponents;
   final ValueChanged<String>? onHtmlUrlChange;
+  final ValueChanged<String>? onPageStarted;
 
   B2CWebViewParams({
     required this.tenantBaseUrl,
@@ -53,14 +54,16 @@ class B2CWebViewParams {
     this.onHtmlErrorInfo,
     this.onHtmlComponents,
     this.onHtmlUrlChange,
+    this.onPageStarted,
     this.timeOutInMillis,
   });
 
   B2CWebViewParams copyWith({
     String? urlUserFlow,
     ValueChanged<String>? onHtmlErrorInfo,
-    ValueChanged<String>? onHtmlComponents,
     ValueChanged<String>? onHtmlUrlChange,
+    ValueChanged<String>? onPageStarted,
+    ValueChanged<(String? url, String data)>? onHtmlComponents,
     final Function({
       required TokenEntity accessToken,
       required TokenEntity idToken,
@@ -85,6 +88,7 @@ class B2CWebViewParams {
       onHtmlComponents: onHtmlComponents ?? this.onHtmlComponents,
       onHtmlErrorInfo: onHtmlErrorInfo ?? this.onHtmlErrorInfo,
       onHtmlUrlChange: onHtmlUrlChange ?? this.onHtmlUrlChange,
+      onPageStarted: onPageStarted ?? this.onPageStarted,
       onAllTokensRetrieved: onAllTokensRetrieved ?? this.onAllTokensRetrieved,
       isLoginFlow: isLoginFlow,
       containsChallenge: containsChallenge,

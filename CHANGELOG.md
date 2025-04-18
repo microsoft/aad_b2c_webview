@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-04-17
+- Updated README
+- Added new function to control start page
+- Added new function to control keep loading
+- Fix loading stack
+- Apply dart format
+
 ## [0.1.0] - 2025-01-02
 - Bugs fixed
 - Added Webview Interaction

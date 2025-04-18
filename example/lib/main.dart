@@ -79,7 +79,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,35 +94,30 @@ class _HomePageState extends State<HomePage> {
               icon: Icons.touch_app_outlined,
             ),
             const SizedBox(height: 16.0),
-
             ButtonWidget(
               onTap: _goToLoginWebView,
               title: 'B2C with WebView',
               icon: Icons.web_asset,
             ),
             const SizedBox(height: 16.0),
-
             ButtonWidget(
               onTap: _goToLoginCustomization,
               title: 'Simple Customization',
               icon: Icons.code,
             ),
             const SizedBox(height: 16.0),
-
             ButtonWidget(
               onTap: _goToLoginMFACustomization,
               title: 'Multiple Customizations',
               icon: Icons.dashboard_customize_outlined,
             ),
             const SizedBox(height: 16.0),
-
             ButtonWidget(
               onTap: _goToLoginDynamic,
               title: 'Dynamic Customization',
               icon: Icons.precision_manufacturing_outlined,
             ),
             const SizedBox(height: 16.0),
-
             ButtonWidget(
               onTap: _refreshToken,
               title: 'Refresh token',

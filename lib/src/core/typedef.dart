@@ -17,6 +17,11 @@ typedef WebViewErrorFunction = Function(
   String? error,
 );
 
+/// This function is called when the webview url is changed.
+typedef WebViewChangeFunction = bool Function(
+  String? url,
+);
+
 /// Builder function to create an error widget. This builder is called when
 /// the web view failed loading.
 typedef WebViewErrorWidgetBuilder = Widget Function(

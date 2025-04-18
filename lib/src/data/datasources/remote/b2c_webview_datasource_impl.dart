@@ -55,14 +55,20 @@ class B2CWebViewDatasourceImpl implements B2CWebViewDatasource {
         )
         ..addJavaScriptChannel(
           FlutterJs.jsFlutterComponentChannel,
-          onMessageReceived: (result) {
+          onMessageReceived: (result) async {
+            final url = await _controllers.mobile.currentUrl();
             if (params.onHtmlComponents != null) {
-              params.onHtmlComponents!(result.message);
+              params.onHtmlComponents!((url, result.message));
             }
           },
         )
         ..setNavigationDelegate(
           NavigationDelegate(
+            onPageStarted: (url) {
+              if (params.onPageStarted != null) {
+                params.onPageStarted!(url);
+              }
+            },
             onPageFinished: (url) async {
               if (url.isNotEmpty) {
                 _helper.checkPage(params: params, url: url);
