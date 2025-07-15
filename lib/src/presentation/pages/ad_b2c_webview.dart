@@ -17,8 +17,7 @@ class ADLoginWebView extends StatefulWidget {
   State<ADLoginWebView> createState() => _ADLoginWebViewState();
 }
 
-class _ADLoginWebViewState extends State<ADLoginWebView>
-    with MixinControllerAccess {
+class _ADLoginWebViewState extends State<ADLoginWebView> with MixinControllerAccess {
   @override
   void initState() {
     _initWebview();
@@ -40,7 +39,9 @@ class _ADLoginWebViewState extends State<ADLoginWebView>
   }
 
   _onLoadComponents(_) {
-    widget.settings?.controllerBuilder(context, actionController);
+    if (mounted) {
+      widget.settings?.controllerBuilder(context, actionController);
+    }
   }
 
   _onSuccess({
@@ -48,11 +49,15 @@ class _ADLoginWebViewState extends State<ADLoginWebView>
     required TokenEntity idToken,
     required TokenEntity refreshToken,
   }) {
-    widget.settings?.onSuccess(context, accessToken, idToken, refreshToken);
+    if (mounted) {
+      widget.settings?.onSuccess(context, accessToken, idToken, refreshToken);
+    }
   }
 
   _onError(String message) {
-    widget.settings?.onError(context, message);
+    if (mounted) {
+      widget.settings?.onError(context, message);
+    }
   }
 
   Widget _buildMobile() => WebViewWidget(
