@@ -33,6 +33,7 @@ class B2CAuthDatasourceImpl implements B2CAuthDatasource {
       'scope': Constants.defaultScopes,
       'client_id': params.clientId,
       'refresh_token': params.refreshToken,
+      'scope': params.providedScopes,
     };
 
     final response = await _client.post(
